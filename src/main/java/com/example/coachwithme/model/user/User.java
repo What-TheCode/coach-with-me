@@ -1,6 +1,7 @@
 package com.example.coachwithme.model.user;
 
 import com.example.coachwithme.model.user.coach.CoachDetails;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,7 +41,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "coach_details_id")
     private CoachDetails coachDetails;
 
 }
