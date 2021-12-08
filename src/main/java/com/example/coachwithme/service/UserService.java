@@ -1,5 +1,6 @@
 package com.example.coachwithme.service;
 
+import com.example.coachwithme.dto.CreateUserDto;
 import com.example.coachwithme.dto.UserDto;
 import com.example.coachwithme.mapper.UserMapper;
 import com.example.coachwithme.repository.UserRepository;
@@ -16,7 +17,7 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public UserDto registerUser(UserDto userDto){
-        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
+    public UserDto registerUser(CreateUserDto createUserDto){
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(createUserDto)));
     }
 }

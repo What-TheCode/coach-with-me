@@ -13,7 +13,12 @@ public class CoachDetailMapper {
         this.topicExperienceMapper = topicExperienceMapper;
     }
 
-    public CoachDetailsDto toDto(CoachDetails coachDetails){
+    public CoachDetailsDto toDto(CoachDetails coachDetails) {
+
+        if (coachDetails == null) {
+            return null;
+        }
+
         return CoachDetailsDto.builder()
                 .id(coachDetails.getId())
                 .coachExp(coachDetails.getCoachExp())

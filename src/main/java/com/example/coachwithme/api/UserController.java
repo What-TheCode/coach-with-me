@@ -1,5 +1,6 @@
 package com.example.coachwithme.api;
 
+import com.example.coachwithme.dto.CreateUserDto;
 import com.example.coachwithme.dto.UserDto;
 import com.example.coachwithme.service.UserService;
 import org.slf4j.Logger;
@@ -22,8 +23,8 @@ public class UserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
-        logger.info("User is created with name: " + userDto.getName());
-        return userService.registerUser(userDto);
+    public UserDto createUser(@Valid @RequestBody CreateUserDto createUserDto) {
+        logger.info("User is created with name: " + createUserDto.getName());
+        return userService.registerUser(createUserDto);
     }
 }
