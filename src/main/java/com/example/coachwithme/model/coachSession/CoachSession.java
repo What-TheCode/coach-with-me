@@ -11,7 +11,7 @@ import java.time.LocalTime;
 
 
 @Entity
-//@Builder
+@Builder
 @Getter
 @NoArgsConstructor
 @Table(name = "coach_session")

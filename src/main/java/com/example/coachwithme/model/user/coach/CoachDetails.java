@@ -10,7 +10,7 @@ import java.util.List;
 @Embeddable
 @Getter
 @NoArgsConstructor
-//@Builder
+@Builder
 @Table(name = "coach_details")
 public class CoachDetails {
 

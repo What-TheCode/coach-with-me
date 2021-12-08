@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-//@Builder
+@Builder
 @Table(name = "topic_experience")
 public class TopicExperience {
 

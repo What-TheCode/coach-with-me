@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-//@Builder
+@Builder
 @Entity
 public class SessionFeedback {
     @Id
