@@ -27,4 +27,11 @@ public class UserController {
         logger.info("User is created with name: " + createUserDto.getName());
         return userService.registerUser(createUserDto);
     }
+
+    @GetMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public UserDto getUserOverview(@PathVariable int userId){
+        logger.info("UserOverview for User with ID :"+ userId+" is retrieved.");
+        return userService.showUserProfileInfo(userId);
+    }
 }

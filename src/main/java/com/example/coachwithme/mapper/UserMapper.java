@@ -3,7 +3,6 @@ package com.example.coachwithme.mapper;
 import com.example.coachwithme.dto.CreateUserDto;
 import com.example.coachwithme.dto.UserDto;
 import com.example.coachwithme.model.user.User;
-import com.example.coachwithme.model.user.coach.CoachDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,7 +25,6 @@ public class UserMapper {
                 .company(userDto.getCompany())
                 .userRoles(userDto.getUserRoles())
                 .pictureUrl(userDto.getPictureUrl())
-                .password(userDto.getPassword())
                 .coachDetails(this.coachDetailMapper.toEntity(userDto.getCoachDetails()))
                 .build();
     }

@@ -2,8 +2,8 @@ package com.example.coachwithme.service;
 
 import com.example.coachwithme.dto.CreateUserDto;
 import com.example.coachwithme.dto.UserDto;
-import com.example.coachwithme.exceptions.ControllerAdvisor;
 import com.example.coachwithme.exceptions.NotUniqueEmailException;
+import com.example.coachwithme.exceptions.UserDoesNotExistException;
 import com.example.coachwithme.mapper.UserMapper;
 import com.example.coachwithme.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -25,9 +25,10 @@ public class UserService {
         return userMapper.toDto(userRepository.save(userMapper.toEntity(createUserDto)));
     }
 
-    private void assertIfTheEmailIsExisting(String email){
-        if (userRepository.findByEmail(email) != null) {
-            throw new NotUniqueEmailException("Email address already exists.");
-        }
+
+
+    public UserDto showUserProfileInfo(int userId){
+        assertIfUserIsExist(userId);
+        return userMapper.toDto(userRepository.findById(userId).get());
     }
 }
