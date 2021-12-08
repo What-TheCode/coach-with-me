@@ -37,6 +37,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private List<UserRole> userRoles;
 
+
     @Column(name = "picture_url")
     private String pictureUrl;
 
