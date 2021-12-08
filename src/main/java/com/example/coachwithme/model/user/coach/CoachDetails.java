@@ -1,6 +1,6 @@
-package com.example.coachwithme.model;
+package com.example.coachwithme.model.user.coach;
 
-import lombok.Builder;
+import com.example.coachwithme.model.coachSession.topic.TopicExperience;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
