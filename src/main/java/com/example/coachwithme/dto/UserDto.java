@@ -29,9 +29,7 @@ public class UserDto {
     @NotBlank(message ="UserRole can not be blank") // not sur if this will work
     private List<UserRole> userRoles;
     private String pictureUrl;
-    @NotBlank(message = "Password can not be empty")
-    @Pattern(regexp = "")
-    private String password;
+
     private CoachDetailsDto coachDetails;
 
 

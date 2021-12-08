@@ -49,8 +49,16 @@ public class UserMapper {
                 .company(user.getCompany())
                 .userRoles(user.getUserRoles())
                 .pictureUrl(user.getPictureUrl())
-                .password(user.getPassword())
                 .coachDetails(this.coachDetailMapper.toDto(user.getCoachDetails()))
                 .build();
     }
+
+
+//
+//    First name
+//    Last name
+//    Email
+//    Company (out of scope)
+//    role (out of scope)
+//    picture (via external url)
 }

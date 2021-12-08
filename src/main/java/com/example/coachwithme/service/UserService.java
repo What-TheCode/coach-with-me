@@ -31,4 +31,20 @@ public class UserService {
         assertIfUserIsExist(userId);
         return userMapper.toDto(userRepository.findById(userId).get());
     }
+
+
+
+    //todo
+    private void assertIfUserIsExist(int userId){
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new UserDoesNotExistException("user with " + userId + " is not Existed");
+        }
+
+    }
+
+    private void assertIfTheEmailIsExisting(String email){
+        if (userRepository.findByEmail(email) != null) {
+            throw new NotUniqueEmailException("Email address already exists.");
+        }
+    }
 }
