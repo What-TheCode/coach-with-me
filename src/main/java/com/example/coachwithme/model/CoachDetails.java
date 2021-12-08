@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Builder
-@Table(name = "coach_details")
 public class CoachDetails {
 
     @Column(name = "coach_exp")
