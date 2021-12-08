@@ -1,4 +1,4 @@
-package com.example.coachwithme.model;
+package com.example.coachwithme.model.coachSession;
 
 public enum SessionState {
     REQUESTED,

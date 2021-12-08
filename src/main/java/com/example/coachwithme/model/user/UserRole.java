@@ -1,4 +1,4 @@
-package com.example.coachwithme.model;
+package com.example.coachwithme.model.user;
 
 
 public enum UserRole {
