@@ -2,6 +2,8 @@ package com.example.coachwithme.service;
 
 import com.example.coachwithme.dto.CreateUserDto;
 import com.example.coachwithme.dto.UserDto;
+import com.example.coachwithme.exceptions.ControllerAdvisor;
+import com.example.coachwithme.exceptions.NotUniqueEmailException;
 import com.example.coachwithme.mapper.UserMapper;
 import com.example.coachwithme.repository.UserRepository;
 import org.springframework.stereotype.Service;
