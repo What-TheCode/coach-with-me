@@ -11,6 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
+@Table(name = "session_feedback")
 public class SessionFeedback {
     @Id
     @SequenceGenerator(name = "session_feedback_seq", sequenceName = "SESSION_FEEDBACK_ID_SEQ", allocationSize = 1)
