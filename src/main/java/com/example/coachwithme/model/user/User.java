@@ -37,7 +37,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private List<UserRole> userRoles;
 
-
     @Column(name = "picture_url")
     private String pictureUrl;
 
@@ -47,5 +46,4 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "coach_details_id")
     private CoachDetails coachDetails;
-
 }
