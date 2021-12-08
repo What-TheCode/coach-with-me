@@ -1,7 +1,6 @@
 package com.example.coachwithme.model.user;
 
 import com.example.coachwithme.model.user.coach.CoachDetails;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor
-@Builder
+//@Builder
 @Table(name = "user_table")
 public class User {
 
@@ -31,7 +30,7 @@ public class User {
     private String company;
 
     @ElementCollection(targetClass = UserRole.class)
-    @JoinColumn(name = "user_id")
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private List<UserRole> userRoles;
 

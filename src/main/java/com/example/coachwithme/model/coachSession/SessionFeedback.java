@@ -2,6 +2,7 @@ package com.example.coachwithme.model.coachSession;
 
 import com.example.coachwithme.model.user.coach.CoachFeedback;
 import com.example.coachwithme.model.user.UserFeedback;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,7 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Builder
+//@Builder
 @Entity
 @Table(name = "session_feedback")
 public class SessionFeedback {

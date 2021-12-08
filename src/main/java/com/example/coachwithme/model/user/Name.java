@@ -9,7 +9,7 @@ import javax.persistence.Embeddable;
 
 @Getter
 @NoArgsConstructor
-@Builder
+//@Builder
 @Embeddable
 public class Name {
 

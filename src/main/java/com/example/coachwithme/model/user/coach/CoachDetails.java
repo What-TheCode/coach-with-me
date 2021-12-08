@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@Builder
+//@Builder
 @Entity
 @Table(name = "coach_details")
 public class CoachDetails {
@@ -31,7 +31,7 @@ public class CoachDetails {
     @Column(name = "coach_availability")
     private String coachAvailability;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private List<TopicExperience> coachExperiences;
 
