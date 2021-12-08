@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
@@ -20,6 +21,13 @@ public class UserService {
     }
 
     public UserDto registerUser(CreateUserDto createUserDto){
+        assertIfTheEmailIsExisting(createUserDto.getEmail());
         return userMapper.toDto(userRepository.save(userMapper.toEntity(createUserDto)));
+    }
+
+    private void assertIfTheEmailIsExisting(String email){
+        if (userRepository.findByEmail(email) != null) {
+            throw new NotUniqueEmailException("Email address already exists.");
+        }
     }
 }
