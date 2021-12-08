@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-//@Builder
+@Builder
 @Entity
 @Table(name = "session_feedback")
 public class SessionFeedback {

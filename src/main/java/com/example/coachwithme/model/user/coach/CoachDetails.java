@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-//@Builder
+@Builder
 @Entity
 @Table(name = "coach_details")
 public class CoachDetails {
