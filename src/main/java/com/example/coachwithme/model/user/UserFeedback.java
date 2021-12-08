@@ -1,5 +1,6 @@
 package com.example.coachwithme.model.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Getter
+@AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Builder
 @Table(name = "user_feedback")
 public class UserFeedback {

@@ -1,5 +1,6 @@
 package com.example.coachwithme.model.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-@Getter
+@AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Builder
 @Embeddable
 public class Name {

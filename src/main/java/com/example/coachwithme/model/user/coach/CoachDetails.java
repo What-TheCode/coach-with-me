@@ -1,6 +1,7 @@
 package com.example.coachwithme.model.user.coach;
 
 import com.example.coachwithme.model.coachSession.topic.TopicExperience;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,9 @@ import javax.persistence.*;
 import java.util.List;
 
 
-@Getter
+@AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Builder
 @Entity
 @Table(name = "coach_details")

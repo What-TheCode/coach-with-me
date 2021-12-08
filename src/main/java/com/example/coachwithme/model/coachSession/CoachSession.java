@@ -2,6 +2,7 @@ package com.example.coachwithme.model.coachSession;
 
 import com.example.coachwithme.model.coachSession.topic.Topic;
 import com.example.coachwithme.model.user.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,10 @@ import java.time.LocalTime;
 
 
 @Entity
-@Builder
-@Getter
+@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Builder
 @Table(name = "coach_session")
 public class CoachSession {
 

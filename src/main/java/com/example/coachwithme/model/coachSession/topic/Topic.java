@@ -1,5 +1,6 @@
 package com.example.coachwithme.model.coachSession.topic;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,9 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Builder
-@NoArgsConstructor
 @Table(name = "topic")
 public class Topic {
 
