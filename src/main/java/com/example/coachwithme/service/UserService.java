@@ -1,12 +1,11 @@
 package com.example.coachwithme.service;
 
-import com.example.coachwithme.dto.CoachDetailsCreateDto;
-import com.example.coachwithme.dto.CreateUserDto;
-import com.example.coachwithme.dto.UpdateUserDto;
-import com.example.coachwithme.dto.UserDto;
+import com.example.coachwithme.dto.*;
 import com.example.coachwithme.exceptions.NotUniqueEmailException;
 import com.example.coachwithme.exceptions.UserDoesNotExistException;
 import com.example.coachwithme.mapper.CoachDetailMapper;
+import com.example.coachwithme.mapper.NameMapper;
+import com.example.coachwithme.mapper.TopicExperienceMapper;
 import com.example.coachwithme.mapper.UserMapper;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
@@ -23,11 +22,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final CoachDetailMapper coachDetailMapper;
+    private final NameMapper nameMapper;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper, CoachDetailMapper coachDetailMapper) {
+
+    public UserService(UserRepository userRepository, UserMapper userMapper, CoachDetailMapper coachDetailMapper, NameMapper nameMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.coachDetailMapper = coachDetailMapper;
+        this.nameMapper= nameMapper;
+
     }
 
     public UserDto registerUser(CreateUserDto createUserDto){
@@ -46,14 +49,15 @@ public class UserService {
     public UserDto editUserProfileInfo(int userId, UpdateUserDto updateUserDto) {
         assertIfUserIsExist(userId);
         User userToUpdate = userRepository.getById(userId);
-
-        userToUpdate.getName().setFirstName(updateUserDto.getName().getFirstName());
-        userToUpdate.getName().setLastName(updateUserDto.getName().getLastName());
+        assertIfEmailIsValidChange(updateUserDto.getEmail(), userToUpdate.getEmail());
+        userToUpdate.setName(nameMapper.toEntity(updateUserDto.getName()));
         userToUpdate.setEmail(updateUserDto.getEmail());
         userToUpdate.setPictureUrl(updateUserDto.getPictureUrl());
 
-        return userMapper.toDto(userToUpdate);
+        return userMapper.toDto(userRepository.getById(userId));
     }
+
+
 
 
     private void assertIfUserIsExist(int userId){
@@ -75,5 +79,29 @@ public class UserService {
         userToUpgrade.addUserRole(COACH);
         userToUpgrade.setCoachDetails(coachDetailMapper.toEntity(coachDetailsCreateDto));
         return userMapper.toDto(userToUpgrade);
+    }
+
+    //TODO The returning json gives id 0 back for the topicExperiences -> this is not correct
+    // fix that it not always gives a new entry in the database
+    // refactor
+    public UserDto updateCoach(int userId, UpdateCoachDto updateCoachDto){
+        assertIfUserIsExist(userId);
+        User coachToUpdate = userRepository.getById(userId);
+        assertIfEmailIsValidChange(updateCoachDto.getEmail(), coachToUpdate.getEmail());
+        coachToUpdate.setName(nameMapper.toEntity(updateCoachDto.getName()));
+        coachToUpdate.setEmail(updateCoachDto.getEmail());
+        coachToUpdate.setPictureUrl(updateCoachDto.getPictureUrl());
+        coachToUpdate.setCoachDetails(coachDetailMapper.toEntity(updateCoachDto.getCoachDetailsCreateDto()));
+
+        return showUserProfileInfo(userId);
+    }
+
+    private void assertIfEmailIsValidChange(String newEmail, String emailToUpdate) {
+        if(newEmail.equals(emailToUpdate)){
+            return;
+        }
+
+        assertIfTheEmailIsExisting(newEmail);
+
     }
 }
