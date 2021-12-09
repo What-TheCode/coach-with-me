@@ -33,7 +33,7 @@ public class CoachDetails {
     @Column(name = "coach_availability")
     private String coachAvailability;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private List<TopicExperience> coachExperiences;
 

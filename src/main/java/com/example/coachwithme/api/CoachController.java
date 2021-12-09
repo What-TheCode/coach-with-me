@@ -2,6 +2,7 @@ package com.example.coachwithme.api;
 
 
 import com.example.coachwithme.dto.CoachDetailsCreateDto;
+import com.example.coachwithme.dto.UpdateCoachDto;
 import com.example.coachwithme.dto.UserDto;
 import com.example.coachwithme.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,18 @@ public class CoachController {
         this.userService = userService;
     }
 
-    @PutMapping(path = "/{userId}", consumes = org.springframework.http.MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/upgrade/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto upGradeToCoach(@PathVariable int userId,
                                   @Valid @RequestBody CoachDetailsCreateDto coachDetailsCreateDto) {
         return userService.upGradeToCoach(coachDetailsCreateDto, userId);
     }
+
+    @PutMapping(path = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public UserDto updateCoach(@PathVariable int userId, @Valid @RequestBody UpdateCoachDto updateCoachDto){
+        return userService.updateCoach(userId, updateCoachDto);
+    }
+
+
 }
