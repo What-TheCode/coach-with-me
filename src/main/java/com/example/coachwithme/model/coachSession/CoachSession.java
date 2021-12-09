@@ -11,7 +11,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

@@ -19,7 +19,6 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
 
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@Valid @RequestBody CreateUserDto createUserDto) {
@@ -30,18 +29,16 @@ public class UserController {
     @GetMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public UserDto getUserOverview(@PathVariable int userId) {
-        log.info("UserOverview for User with ID :" + userId + " is retrieved.");
+        log.info("UserOverview for User with ID :" + userId + " is requested.");
         return userService.showUserProfileInfo(userId);
     }
-
 
     @PutMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public UserDto editUserOverview(@PathVariable int userId,
-                                    @Valid @RequestBody UpdateUserDto updateUserDto){
-        log.info("UserOverview for User with ID :" + userId + " is retrieved.");
-        return userService.editUserProfileInfo(userId,updateUserDto);
+                                    @Valid @RequestBody UpdateUserDto updateUserDto) {
+        log.info("Edit UserOverview for User with ID :" + userId + " is requested.");
+        return userService.editUserProfileInfo(userId, updateUserDto);
     }
-
 
 }
