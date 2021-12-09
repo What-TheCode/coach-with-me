@@ -1,12 +1,11 @@
 package com.example.coachwithme.api;
 
 import com.example.coachwithme.dto.CreateUserDto;
+import com.example.coachwithme.dto.UpdateUserDto;
 import com.example.coachwithme.dto.UserDto;
 import com.example.coachwithme.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -34,4 +33,15 @@ public class UserController {
         log.info("UserOverview for User with ID :" + userId + " is retrieved.");
         return userService.showUserProfileInfo(userId);
     }
+
+
+    @PutMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public UserDto editUserOverview(@PathVariable int userId,
+                                    @Valid @RequestBody UpdateUserDto updateUserDto){
+        log.info("UserOverview for User with ID :" + userId + " is retrieved.");
+        return userService.editUserProfileInfo(userId,updateUserDto);
+    }
+
+
 }

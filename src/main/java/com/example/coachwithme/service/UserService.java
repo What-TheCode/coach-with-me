@@ -1,14 +1,19 @@
 package com.example.coachwithme.service;
 
 import com.example.coachwithme.dto.CreateUserDto;
+import com.example.coachwithme.dto.UpdateUserDto;
 import com.example.coachwithme.dto.UserDto;
 import com.example.coachwithme.exceptions.NotUniqueEmailException;
 import com.example.coachwithme.exceptions.UserDoesNotExistException;
 import com.example.coachwithme.mapper.UserMapper;
+import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class UserService {
 
 
@@ -33,8 +38,19 @@ public class UserService {
     }
 
 
+    public UserDto editUserProfileInfo(int userId, UpdateUserDto updateUserDto) {
+        assertIfUserIsExist(userId);
+        User userToUpdate = userRepository.getById(userId);
 
-    //todo
+        userToUpdate.getName().setFirstName(updateUserDto.getName().getFirstName());
+        userToUpdate.getName().setLastName(updateUserDto.getName().getLastName());
+        userToUpdate.setEmail(updateUserDto.getEmail());
+        userToUpdate.setPictureUrl(updateUserDto.getPictureUrl());
+
+        return userMapper.toDto(userToUpdate);
+    }
+
+
     private void assertIfUserIsExist(int userId){
         if (userRepository.findById(userId).isEmpty()) {
             throw new UserDoesNotExistException("user with " + userId + " is not Existed");
@@ -47,4 +63,6 @@ public class UserService {
             throw new NotUniqueEmailException("Email address already exists.");
         }
     }
+
+
 }
