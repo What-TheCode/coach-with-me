@@ -1,5 +1,6 @@
 package com.example.coachwithme.mapper;
 
+import com.example.coachwithme.dto.CoachDetailsCreateDto;
 import com.example.coachwithme.dto.CoachDetailsDto;
 import com.example.coachwithme.model.user.coach.CoachDetails;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,14 @@ public class CoachDetailMapper {
                 .coachIntroduction(coachDetailsDto.getCoachIntroduction())
                 .coachAvailability(coachDetailsDto.getCoachAvailability())
                 .coachExperiences(topicExperienceMapper.toEntities(coachDetailsDto.getCoachExperiences()))
+                .build();
+    }
+
+    public CoachDetails toEntity(CoachDetailsCreateDto coachDetailsCreateDto) {
+        return CoachDetails.builder()
+                .coachIntroduction(coachDetailsCreateDto.getCoachIntroduction())
+                .coachAvailability(coachDetailsCreateDto.getCoachAvailability())
+                .coachExperiences(topicExperienceMapper.fromCreateDtoToEntities(coachDetailsCreateDto.getCoachExperiences()))
                 .build();
     }
 }

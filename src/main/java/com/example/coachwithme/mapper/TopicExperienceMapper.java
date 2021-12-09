@@ -1,5 +1,6 @@
 package com.example.coachwithme.mapper;
 
+import com.example.coachwithme.dto.CreateTopicExperienceDto;
 import com.example.coachwithme.dto.TopicExperienceDto;
 import com.example.coachwithme.model.coachSession.topic.TopicExperience;
 import org.springframework.stereotype.Component;
@@ -32,8 +33,19 @@ public class TopicExperienceMapper {
                 .build();
     }
 
+    public TopicExperience toEntity(CreateTopicExperienceDto createTopicExperienceDto){
+        return TopicExperience.builder()
+                .experience(createTopicExperienceDto.getExperience())
+                .topic(topicMapper.toEntity(createTopicExperienceDto.getTopic()))
+                .build();
+    }
+
     public List<TopicExperience> toEntities(List<TopicExperienceDto> topicExperienceDtos){
         return topicExperienceDtos.stream().map(this::toEntity).collect(Collectors.toList());
+    }
+
+    public List<TopicExperience> fromCreateDtoToEntities(List<CreateTopicExperienceDto> createTopicExperienceDtos){
+        return createTopicExperienceDtos.stream().map(this::toEntity).collect(Collectors.toList());
     }
 
     public List<TopicExperienceDto> toDtos(List<TopicExperience> topicExperiences){

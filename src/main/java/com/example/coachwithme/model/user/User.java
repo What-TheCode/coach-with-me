@@ -44,4 +44,12 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "coach_details_id")
     private CoachDetails coachDetails;
+
+    public void setCoachDetails(CoachDetails coachDetails) {
+        this.coachDetails = coachDetails;
+    }
+
+    public void addUserRole(UserRole coach) {
+        this.userRoles.add(coach);
+    }
 }
