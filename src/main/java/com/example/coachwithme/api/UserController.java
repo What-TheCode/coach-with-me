@@ -14,6 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 @Slf4j
+@CrossOrigin
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
 public class UserController {

@@ -16,4 +16,9 @@ public class NameDto {
     private String firstName;
     @NotBlank(message = "Lastname can not be empty")
     private String lastName;
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

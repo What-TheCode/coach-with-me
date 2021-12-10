@@ -21,6 +21,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -47,11 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/users/login");
 
         http.csrf().disable();
-        http.cors();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //http.authorizeRequests().anyRequest().permitAll();
         http.authorizeRequests().antMatchers(GET, "/users/login/**").permitAll();
-        //http.authorizeRequests().antMatchers(POST, "/users/").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/users").permitAll();
         //http.authorizeRequests().antMatchers(GET, "/coach/**").hasAnyAuthority(UserRole.COACH.getRoleName());
         //http.authorizeRequests().antMatchers(POST, "/users/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/v3/api-docs/**",
@@ -67,12 +68,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    CorsFilter corsFilter(@Value("${coachwithme.allowed.origins}") String origins) {
+    CorsFilter corsFilter() {
 
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setMaxAge(8000L);
         corsConfig.setAllowCredentials(true);
-        corsConfig.addAllowedOrigin(origins);
+        corsConfig.addAllowedOrigin("http://localhost:4200");
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("GET");
         corsConfig.addAllowedMethod("POST");
@@ -81,8 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfig.addAllowedMethod("DELETE");
 
 
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
 
         return new CorsFilter(source);
@@ -93,4 +93,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 }

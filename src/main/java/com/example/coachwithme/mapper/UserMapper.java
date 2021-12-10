@@ -43,7 +43,6 @@ public class UserMapper {
                 .build();
     }
 
-
     public UserDto toDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
