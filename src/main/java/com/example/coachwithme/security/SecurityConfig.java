@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -45,8 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //http.authorizeRequests().anyRequest().permitAll();
         http.authorizeRequests().antMatchers(GET, "/users/login/**").permitAll();
-        http.authorizeRequests().antMatchers(POST, "/users/").permitAll();
-        //http.authorizeRequests().antMatchers(GET, "/users/**").hasAnyAuthority(UserRole.ADMIN.getAuthority());
+        //http.authorizeRequests().antMatchers(POST, "/users/").permitAll();
+        //http.authorizeRequests().antMatchers(GET, "/coach/**").hasAnyAuthority(UserRole.COACH.getRoleName());
         //http.authorizeRequests().antMatchers(POST, "/users/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/v3/api-docs/**",
                 "/configuration/ui",

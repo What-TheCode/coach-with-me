@@ -74,10 +74,9 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto editUserProfileInfo(int userId, UpdateUserDto updateUserDto) {
-        assetIfUserCanModifyProfile(userId);
+        assertIfUserCanModifyProfile(userId);
 
         User userToUpdate = userRepository.getById(userId);
-
         assertIfEmailIsValidChange(updateUserDto.getEmail(), userToUpdate.getEmail());
         userToUpdate.setName(nameMapper.toEntity(updateUserDto.getName()));
         userToUpdate.setEmail(updateUserDto.getEmail());
@@ -103,7 +102,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    private void assetIfUserCanModifyProfile(int userId) {
+    private void assertIfUserCanModifyProfile(int userId) {
         assertIfUserIdExist(userId);
 
         String loggedInEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -147,6 +146,8 @@ public class UserService implements UserDetailsService {
         if (newEmail.equals(emailToUpdate)) {
             return;
         }
+        System.out.println("passing here");
+
         assertIfTheEmailIsExisting(newEmail);
     }
 }
