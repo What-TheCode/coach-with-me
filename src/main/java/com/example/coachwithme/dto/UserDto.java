@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Builder
@@ -20,14 +18,19 @@ import java.util.List;
 public class UserDto {
 
     private int id;
+
     @Valid
     private NameDto name;
+
     @Email(message = "Email should be valid")
     private String email;
+
     @NotBlank(message = "Company can not be empty")
     private String company;
-    @NotBlank(message ="UserRole can not be blank") // not sur if this will work
-    private List<UserRole> userRoles;
+
+    @NotBlank(message = "UserRole can not be blank") // not sur if this will work
+    private Set<UserRole> userRoles;
+
     private String pictureUrl;
 
     private CoachDetailsDto coachDetails;

@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @ElementCollection(targetClass = UserRole.class)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private List<UserRole> userRoles;
+    private Set<UserRole> userRoles;
 
     @Column(name = "picture_url")
     private String pictureUrl;
@@ -46,7 +46,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "coach_details_id")
     private CoachDetails coachDetails;
 

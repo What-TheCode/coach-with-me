@@ -4,7 +4,6 @@ import com.example.coachwithme.security.filters.CustomAuthenticationFilter;
 import com.example.coachwithme.security.filters.CustomAuthorizationFilter;
 import com.example.coachwithme.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,8 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -44,27 +42,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/users/login");
 
-        http.cors();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //http.authorizeRequests().anyRequest().permitAll();
         http.authorizeRequests().antMatchers(GET, "/users/login/**").permitAll();
         http.authorizeRequests().antMatchers(POST, "/users").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/coaches/becomecoach").permitAll();
+        http.authorizeRequests().antMatchers(PUT, "/coaches/**").permitAll();
         //http.authorizeRequests().antMatchers(GET, "/coach/**").hasAnyAuthority(UserRole.COACH.getRoleName());
-        //http.authorizeRequests().antMatchers(POST, "/users/save/**").hasAnyAuthority(UserRole.ADMIN.getRoleName());
-        http.authorizeRequests().antMatchers("/v3/api-docs/**", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**").permitAll();
+        //http.authorizeRequests().antMatchers(POST, "/users/save/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers("/v3/api-docs/**",
+                "/configuration/ui",
+                "/swagger-resources/**",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/swagger-ui/**",
+                "/webjars/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
-    CorsFilter corsFilter(@Value("${coachwithme.allowed.origins}") String origin) {
+    CorsFilter corsFilter() {
 
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setMaxAge(8000L);
         corsConfig.setAllowCredentials(true);
-        corsConfig.addAllowedOrigin(origin);
+        corsConfig.addAllowedOrigin("http://localhost:4200");
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("GET");
         corsConfig.addAllowedMethod("POST");

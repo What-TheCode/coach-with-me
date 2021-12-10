@@ -6,8 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Builder
@@ -15,13 +14,10 @@ import javax.validation.constraints.Email;
 @NoArgsConstructor
 public class UpdateCoachDto {
 
-    @Valid
-    private NameDto name;
-    //TODO the check for the dot does not work
-    @Email(message = "Email should be valid")
-    private String email;
-    private String pictureUrl;
-    @Valid
-    private CoachDetailsCreateDto coachDetailsCreateDto;
+    @NotBlank(message = "Introduction cannot be empty.")
+    private String coachIntroduction;
+
+    @NotBlank(message = "Availability cannot be empty.")
+    private String coachAvailability;
 
 }

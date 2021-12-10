@@ -5,6 +5,7 @@ import com.example.coachwithme.dto.TopicExperienceDto;
 import com.example.coachwithme.model.coachSession.topic.TopicExperience;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +50,9 @@ public class TopicExperienceMapper {
     }
 
     public List<TopicExperienceDto> toDtos(List<TopicExperience> topicExperiences){
+        if(topicExperiences == null){
+            return new ArrayList<>();
+        }
         return topicExperiences.stream().map(this::toDto).collect(Collectors.toList());
     }
 }

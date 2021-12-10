@@ -6,7 +6,7 @@ import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
 
 @Component
 public class UserMapper {
@@ -37,7 +37,7 @@ public class UserMapper {
                 .name(this.nameMapper.toEntity(createUserDto.getName()))
                 .email(createUserDto.getEmail())
                 .company(createUserDto.getCompany())
-                .userRoles(List.of(UserRole.COACHEE))
+                .userRoles(Set.of(UserRole.COACHEE))
                 .pictureUrl(createUserDto.getPictureUrl())
                 .password(createUserDto.getPassword())
                 .build();
@@ -54,13 +54,4 @@ public class UserMapper {
                 .coachDetails(this.coachDetailMapper.toDto(user.getCoachDetails()))
                 .build();
     }
-
-
-//
-//    First name
-//    Last name
-//    Email
-//    Company (out of scope)
-//    role (out of scope)
-//    picture (via external url)
 }

@@ -31,8 +31,8 @@ public class CoachDetails {
     @Column(name = "coach_availability")
     private String coachAvailability;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = true)
     private List<TopicExperience> coachExperiences;
 
 }

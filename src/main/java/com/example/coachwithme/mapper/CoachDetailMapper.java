@@ -41,6 +41,7 @@ public class CoachDetailMapper {
 
     public CoachDetails toEntity(CoachDetailsCreateDto coachDetailsCreateDto) {
         return CoachDetails.builder()
+                .coachExp(0)
                 .coachIntroduction(coachDetailsCreateDto.getCoachIntroduction())
                 .coachAvailability(coachDetailsCreateDto.getCoachAvailability())
                 .coachExperiences(topicExperienceMapper.fromCreateDtoToEntities(coachDetailsCreateDto.getCoachExperiences()))

@@ -1,6 +1,9 @@
 package com.example.coachwithme.service;
 
-import com.example.coachwithme.dto.*;
+import com.example.coachwithme.dto.CreateUserDto;
+import com.example.coachwithme.dto.UpdateCoachDto;
+import com.example.coachwithme.dto.UpdateUserDto;
+import com.example.coachwithme.dto.UserDto;
 import com.example.coachwithme.exceptions.NotUniqueEmailException;
 import com.example.coachwithme.exceptions.UserDoesNotExistException;
 import com.example.coachwithme.mapper.CoachDetailMapper;
@@ -8,6 +11,7 @@ import com.example.coachwithme.mapper.NameMapper;
 import com.example.coachwithme.mapper.UserMapper;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
+import com.example.coachwithme.model.user.coach.CoachDetails;
 import com.example.coachwithme.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -119,11 +123,15 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public UserDto upGradeToCoach(CoachDetailsCreateDto coachDetailsCreateDto, int userId) {
+    public UserDto upGradeToCoach(int userId) {
         assertIfUserIdExist(userId);
         User userToUpgrade = userRepository.getById(userId);
         userToUpgrade.addUserRole(UserRole.COACH);
-        userToUpgrade.setCoachDetails(coachDetailMapper.toEntity(coachDetailsCreateDto));
+
+        userToUpgrade.setCoachDetails(CoachDetails
+                .builder()
+                .coachExp(0)
+                .build());
         return userMapper.toDto(userToUpgrade);
     }
 
@@ -132,13 +140,12 @@ public class UserService implements UserDetailsService {
     // refactor
     public UserDto updateCoach(int userId, UpdateCoachDto updateCoachDto) {
         assertIfUserIdExist(userId);
-        User coachToUpdate = userRepository.getById(userId);
-        assertIfEmailIsValidChange(updateCoachDto.getEmail(), coachToUpdate.getEmail());
-        coachToUpdate.setName(nameMapper.toEntity(updateCoachDto.getName()));
-        coachToUpdate.setEmail(updateCoachDto.getEmail());
-        coachToUpdate.setPictureUrl(updateCoachDto.getPictureUrl());
-        coachToUpdate.setCoachDetails(coachDetailMapper.toEntity(updateCoachDto.getCoachDetailsCreateDto()));
+        User coachToUpdate = userRepository.findById(userId)
+                .orElseThrow(() -> new UserDoesNotExistException("This user is not found in the data base"));
 
+        coachToUpdate.getCoachDetails().setCoachIntroduction(updateCoachDto.getCoachIntroduction());
+        coachToUpdate.getCoachDetails().setCoachAvailability(updateCoachDto.getCoachAvailability());
+        userRepository.save(coachToUpdate);
         return showUserProfileInfo(userId);
     }
 
