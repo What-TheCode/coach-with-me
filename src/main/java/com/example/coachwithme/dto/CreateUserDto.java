@@ -25,7 +25,6 @@ public class CreateUserDto {
     @NotBlank(message = "Company can not be empty")
     private String company;
 
-    private List<UserRole> userRoles;
     private String pictureUrl;
     @NotBlank(message = "Password can not be empty")
     private String password;

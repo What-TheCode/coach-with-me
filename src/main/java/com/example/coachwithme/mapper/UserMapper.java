@@ -3,7 +3,10 @@ package com.example.coachwithme.mapper;
 import com.example.coachwithme.dto.CreateUserDto;
 import com.example.coachwithme.dto.UserDto;
 import com.example.coachwithme.model.user.User;
+import com.example.coachwithme.model.user.UserRole;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class UserMapper {
@@ -34,7 +37,7 @@ public class UserMapper {
                 .name(this.nameMapper.toEntity(createUserDto.getName()))
                 .email(createUserDto.getEmail())
                 .company(createUserDto.getCompany())
-                .userRoles(createUserDto.getUserRoles())
+                .userRoles(List.of(UserRole.COACHEE))
                 .pictureUrl(createUserDto.getPictureUrl())
                 .password(createUserDto.getPassword())
                 .build();
