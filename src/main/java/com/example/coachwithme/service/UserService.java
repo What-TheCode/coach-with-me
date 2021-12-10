@@ -6,6 +6,7 @@ import com.example.coachwithme.dto.UpdateUserDto;
 import com.example.coachwithme.dto.UserDto;
 import com.example.coachwithme.exceptions.NotUniqueEmailException;
 import com.example.coachwithme.exceptions.UserDoesNotExistException;
+import com.example.coachwithme.exceptions.UserIsNotACoachException;
 import com.example.coachwithme.mapper.CoachDetailMapper;
 import com.example.coachwithme.mapper.NameMapper;
 import com.example.coachwithme.mapper.UserMapper;
@@ -156,6 +157,13 @@ public class UserService implements UserDetailsService {
         System.out.println("passing here");
 
         assertIfTheEmailIsExisting(newEmail);
+    }
+
+    void assertIfUserIsACoach(int userId){
+        assertIfUserIdExist(userId);
+        if (!userRepository.findById(userId).get().getUserRoles().contains(UserRole.COACH)){
+            throw new UserIsNotACoachException("This user is not a coach");
+        }
     }
 }
 
