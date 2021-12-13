@@ -13,7 +13,9 @@ import com.example.coachwithme.mapper.user.coach.CoachDetailMapper;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import com.example.coachwithme.model.user.coach.CoachDetails;
+import com.example.coachwithme.repository.TopicRepository;
 import com.example.coachwithme.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @Slf4j
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -38,14 +41,8 @@ public class UserService implements UserDetailsService {
     private final CoachDetailMapper coachDetailMapper;
     private final NameMapper nameMapper;
     private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, UserMapper userMapper, CoachDetailMapper coachDetailMapper, NameMapper nameMapper, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.coachDetailMapper = coachDetailMapper;
-        this.nameMapper = nameMapper;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final TopicRepository topicRepository;
+    private final SecurityService securityService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -131,6 +128,15 @@ public class UserService implements UserDetailsService {
         assertIfUserIdExist(userId);
         if (!userRepository.findById(userId).get().getUserRoles().contains(UserRole.COACH)) {
             throw new UserIsNotACoachException("This user is not a coach");
+        }
+    }
+
+    public void assertIfCoachCanTeachTopic(int coachId, int topicId) {
+        List<Integer> topicIds = userRepository.getById(coachId).getCoachDetails().getCoachExperiences().stream()
+                .map(topic -> topic.getTopic().getId())
+                .collect(Collectors.toList());
+        if (!topicIds.contains(topicId)) {
+            throw new CoachCanNotTeachTopicException("This coach can not teach this topic.");
         }
     }
 }

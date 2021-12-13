@@ -1,5 +1,6 @@
 package com.example.coachwithme.dto.coachsession;
 
+import com.example.coachwithme.model.Location;
 import com.example.coachwithme.model.coachSession.SessionState;
 import com.example.coachwithme.model.coachSession.topic.Topic;
 import com.example.coachwithme.model.user.User;
@@ -19,7 +20,8 @@ public class CreateCoachSessionDto {
     @NonNull
     @Positive
     private int topicId;
-    @Future(message = "Book a time in the future")
+
+    @FutureOrPresent(message = "Book a time in the future")
     private LocalDate date;
 
     @NotBlank(message = "Time cannot be empty")

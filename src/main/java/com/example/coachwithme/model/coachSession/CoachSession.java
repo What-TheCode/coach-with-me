@@ -1,5 +1,6 @@
 package com.example.coachwithme.model.coachSession;
 
+import com.example.coachwithme.model.Location;
 import com.example.coachwithme.model.coachSession.topic.Topic;
 import com.example.coachwithme.model.user.User;
 import lombok.AllArgsConstructor;
@@ -24,18 +25,19 @@ public class CoachSession {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "coach_session_seq")
     private int id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "topic_id", referencedColumnName = "id")
     private Topic subject;
 
-    @Column(name = "date", columnDefinition = "TIMESTAMP")
+    @Column(name = "date", columnDefinition = "DATE")
     private LocalDate date;
 
-    @Column(name = "time", columnDefinition = "TIMESTAMP")
+    @Column(name = "time", columnDefinition = "TIME")
     private LocalTime time;
 
     @Column(name = "location")
-    private String location;
+    @Enumerated(EnumType.STRING)
+    private Location location;
 
     @Column(name = "remarks")
     private String remarks;

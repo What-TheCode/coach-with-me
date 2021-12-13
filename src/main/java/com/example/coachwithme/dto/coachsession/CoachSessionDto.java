@@ -1,17 +1,24 @@
 package com.example.coachwithme.dto.coachsession;
 
+import com.example.coachwithme.dto.coachsession.topic.TopicDto;
+import com.example.coachwithme.dto.user.UserDto;
+import com.example.coachwithme.model.Location;
 import com.example.coachwithme.model.coachSession.SessionFeedback;
 import com.example.coachwithme.model.coachSession.SessionState;
 import com.example.coachwithme.model.coachSession.topic.Topic;
 import com.example.coachwithme.model.user.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CoachSessionDto {
 
     private int id;
@@ -22,7 +29,7 @@ public class CoachSessionDto {
 
     private LocalTime time;
 
-    private String location;
+    private Location location;
 
     private String remarks;
 
