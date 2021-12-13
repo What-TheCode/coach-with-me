@@ -63,14 +63,14 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto registerUser(CreateUserDto createUserDto) {
-        assertIfTheEmailIsExisting(createUserDto.getEmail());
+        securityService.assertIfTheEmailIsExisting(createUserDto.getEmail());
         User user = userMapper.toEntity(createUserDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));
     }
 
     public UserDto showUserProfileInfo(int userId) {
-        assertIfUserCanViewProfile(userId);
+        securityService.assertIfUserIdMatchesJWTTokenId(userId);
         return userMapper.toDto(userRepository.findById(userId).get());
     }
 
@@ -79,7 +79,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto editUserProfileInfo(int userId, UpdateUserDto updateUserDto) {
-        assertIfUserCanModifyProfile(userId);
+        securityService.assertIfUserCanModifyProfile(userId);
         User userToUpdate = userRepository.getById(userId);
         assertIfEmailIsValidChange(updateUserDto.getEmail(), userToUpdate.getEmail());
         userToUpdate.setName(nameMapper.toEntity(updateUserDto.getName()));
@@ -90,7 +90,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto upGradeToCoach(int userId) {
-        assertIfUserIdExist(userId);
+        securityService.assertIfUserIdExist(userId);
         User userToUpgrade = userRepository.getById(userId);
         userToUpgrade.addUserRole(UserRole.COACH);
 
@@ -105,7 +105,7 @@ public class UserService implements UserDetailsService {
     // fix that it not always gives a new entry in the database
     // refactor
     public UserDto updateCoach(int userId, UpdateCoachDto updateCoachDto) {
-        assertIfUserIdExist(userId);
+        securityService.assertIfUserIdExist(userId);
         User coachToUpdate = userRepository.findById(userId)
                 .orElseThrow(() -> new UserDoesNotExistException("This user is not found in the data base"));
 
@@ -121,11 +121,11 @@ public class UserService implements UserDetailsService {
         }
         System.out.println("passing here");
 
-        assertIfTheEmailIsExisting(newEmail);
+        securityService.assertIfTheEmailIsExisting(newEmail);
     }
 
     void assertIfUserIsACoach(int userId) {
-        assertIfUserIdExist(userId);
+        securityService.assertIfUserIdExist(userId);
         if (!userRepository.findById(userId).get().getUserRoles().contains(UserRole.COACH)) {
             throw new UserIsNotACoachException("This user is not a coach");
         }
