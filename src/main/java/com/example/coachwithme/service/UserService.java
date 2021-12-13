@@ -84,7 +84,6 @@ public class UserService implements UserDetailsService {
 
     public UserDto editUserProfileInfo(int userId, UpdateUserDto updateUserDto) {
         assertIfUserCanModifyProfile(userId);
-
         User userToUpdate = userRepository.getById(userId);
         assertIfEmailIsValidChange(updateUserDto.getEmail(), userToUpdate.getEmail());
         userToUpdate.setName(nameMapper.toEntity(updateUserDto.getName()));
