@@ -78,6 +78,10 @@ public class UserService implements UserDetailsService {
         return userMapper.toDto(userRepository.findById(userId).get());
     }
 
+    public String checkIfEmailExistsInDatabase(String email) {
+        return String.valueOf(userRepository.findByEmail(email) != null);
+    }
+
     public UserDto editUserProfileInfo(int userId, UpdateUserDto updateUserDto) {
         assertIfUserCanModifyProfile(userId);
 
@@ -159,9 +163,9 @@ public class UserService implements UserDetailsService {
         assertIfTheEmailIsExisting(newEmail);
     }
 
-    void assertIfUserIsACoach(int userId){
+    void assertIfUserIsACoach(int userId) {
         assertIfUserIdExist(userId);
-        if (!userRepository.findById(userId).get().getUserRoles().contains(UserRole.COACH)){
+        if (!userRepository.findById(userId).get().getUserRoles().contains(UserRole.COACH)) {
             throw new UserIsNotACoachException("This user is not a coach");
         }
     }

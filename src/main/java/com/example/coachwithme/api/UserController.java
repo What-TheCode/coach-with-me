@@ -41,4 +41,12 @@ public class UserController {
         return userService.editUserProfileInfo(userId, updateUserDto);
     }
 
+    @GetMapping(path = "/check/{userEmail}", produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String checkIfEmailAlreadyExists(@PathVariable String userEmail) {
+        log.info("Checking if email " + userEmail + " already exists");
+        return userService.checkIfEmailExistsInDatabase(userEmail);
+    }
+
+
 }
