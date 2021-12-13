@@ -1,6 +1,7 @@
 package com.example.coachwithme.model.user;
 
 import com.example.coachwithme.model.user.coach.CoachDetails;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Table(name = "user_table")
 public class User implements UserDetails {
 

@@ -16,7 +16,7 @@ public class CoachSessionDto {
 
     private int id;
 
-    private Topic subject;
+    private TopicDto subject;
 
     private LocalDate date;
 
@@ -26,11 +26,11 @@ public class CoachSessionDto {
 
     private String remarks;
 
-    private User coach;
+    private UserDto coach;
 
-    private User coachee;
+    private UserDto coachee;
 
     private SessionState state;
 
-    private SessionFeedback feedback;
+    private SessionFeedbackDto feedback;
 }

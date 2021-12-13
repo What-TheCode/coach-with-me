@@ -1,4 +1,4 @@
-package com.example.coachwithme.exceptions;
+package com.example.coachwithme.exceptions.customExceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;

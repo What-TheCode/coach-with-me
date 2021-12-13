@@ -1,8 +1,8 @@
 package com.example.coachwithme.api;
 
 
-import com.example.coachwithme.dto.UpdateCoachDto;
-import com.example.coachwithme.dto.UserDto;
+import com.example.coachwithme.dto.user.coach.UpdateCoachDto;
+import com.example.coachwithme.dto.user.UserDto;
 import com.example.coachwithme.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
-package com.example.coachwithme.mapper;
+package com.example.coachwithme.mapper.user;
 
-import com.example.coachwithme.dto.NameDto;
+import com.example.coachwithme.dto.user.NameDto;
 import com.example.coachwithme.model.user.Name;
 import org.springframework.stereotype.Component;
 

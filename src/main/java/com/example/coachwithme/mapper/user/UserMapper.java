@@ -1,7 +1,8 @@
-package com.example.coachwithme.mapper;
+package com.example.coachwithme.mapper.user;
 
-import com.example.coachwithme.dto.CreateUserDto;
-import com.example.coachwithme.dto.UserDto;
+import com.example.coachwithme.dto.user.CreateUserDto;
+import com.example.coachwithme.dto.user.UserDto;
+import com.example.coachwithme.mapper.user.coach.CoachDetailMapper;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import org.springframework.stereotype.Component;

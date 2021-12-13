@@ -1,8 +1,8 @@
 package com.example.coachwithme.api;
 
-import com.example.coachwithme.dto.CreateUserDto;
-import com.example.coachwithme.dto.UpdateUserDto;
-import com.example.coachwithme.dto.UserDto;
+import com.example.coachwithme.dto.user.CreateUserDto;
+import com.example.coachwithme.dto.user.UpdateUserDto;
+import com.example.coachwithme.dto.user.UserDto;
 import com.example.coachwithme.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

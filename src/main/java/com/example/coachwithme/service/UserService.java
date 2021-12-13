@@ -1,33 +1,32 @@
 package com.example.coachwithme.service;
 
-import com.example.coachwithme.dto.CreateUserDto;
-import com.example.coachwithme.dto.UpdateCoachDto;
-import com.example.coachwithme.dto.UpdateUserDto;
-import com.example.coachwithme.dto.UserDto;
-import com.example.coachwithme.exceptions.NotUniqueEmailException;
-import com.example.coachwithme.exceptions.UserDoesNotExistException;
-import com.example.coachwithme.exceptions.UserIsNotACoachException;
-import com.example.coachwithme.mapper.CoachDetailMapper;
-import com.example.coachwithme.mapper.NameMapper;
-import com.example.coachwithme.mapper.UserMapper;
+import com.example.coachwithme.dto.user.CreateUserDto;
+import com.example.coachwithme.dto.user.UpdateUserDto;
+import com.example.coachwithme.dto.user.UserDto;
+import com.example.coachwithme.dto.user.coach.UpdateCoachDto;
+import com.example.coachwithme.exceptions.CoachCanNotTeachTopicException;
+import com.example.coachwithme.exceptions.customExceptions.UserDoesNotExistException;
+import com.example.coachwithme.exceptions.customExceptions.UserIsNotACoachException;
+import com.example.coachwithme.mapper.user.NameMapper;
+import com.example.coachwithme.mapper.user.UserMapper;
+import com.example.coachwithme.mapper.user.coach.CoachDetailMapper;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import com.example.coachwithme.model.user.coach.CoachDetails;
 import com.example.coachwithme.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -91,40 +90,6 @@ public class UserService implements UserDetailsService {
         userToUpdate.setPictureUrl(updateUserDto.getPictureUrl());
 
         return userMapper.toDto(userRepository.getById(userId));
-    }
-
-    private void assertIfUserIdExist(int userId) {
-        if (userRepository.findById(userId).isEmpty()) {
-            throw new UserDoesNotExistException("user with " + userId + " is not Existed");
-        }
-    }
-
-    private void assertIfUserCanViewProfile(int userId) {
-        assertIfUserIdExist(userId);
-
-        String loggedInEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByEmail(loggedInEmail);
-
-        if (user.getId() != userId) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not allowed to view this");
-        }
-    }
-
-    private void assertIfUserCanModifyProfile(int userId) {
-        assertIfUserIdExist(userId);
-
-        String loggedInEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByEmail(loggedInEmail);
-
-        if (user.getId() != userId && !user.getUserRoles().contains(UserRole.ADMIN)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not allowed to view this");
-        }
-    }
-
-    private void assertIfTheEmailIsExisting(String email) {
-        if (userRepository.findByEmail(email) != null) {
-            throw new NotUniqueEmailException("Email address already exists.");
-        }
     }
 
     public UserDto upGradeToCoach(int userId) {

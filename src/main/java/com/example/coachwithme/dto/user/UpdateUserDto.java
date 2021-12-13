@@ -1,4 +1,4 @@
-package com.example.coachwithme.dto;
+package com.example.coachwithme.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

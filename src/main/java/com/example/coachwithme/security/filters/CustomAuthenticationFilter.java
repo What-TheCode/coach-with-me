@@ -29,6 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private static final int authenticationTimeInMiliseconds = 10 * 60 * 1000 * 6;
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -44,6 +45,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             SecureUserDetails userPass = new ObjectMapper().readValue(request.getInputStream(), SecureUserDetails.class);
             username = userPass.getUsername();
             password = userPass.getPassword();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,7 +64,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Algorithm algorithm = Algorithm.HMAC256(SecurityConfig.JWT_SECRET.getBytes());
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + authenticationTimeInMiliseconds))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);

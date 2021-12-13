@@ -1,5 +1,6 @@
-package com.example.coachwithme.dto;
+package com.example.coachwithme.dto.user.coach;
 
+import com.example.coachwithme.dto.coachsession.topic.TopicExperienceDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

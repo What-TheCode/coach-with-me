@@ -15,14 +15,14 @@ import javax.validation.Valid;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(path = "/session")
+@RequestMapping(path = "/sessions")
 public class CoachSessionController {
     private final CoachSessionService coachSessionService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
 //    @PreAuthorize("hasAnyRole('COACHEE')")
-    public CoachSessionDto createSession(@Valid @RequestBody CreateCoachSessionDto createCoachSessionDto){
+    public CoachSessionDto createSession(@Valid @RequestBody CreateCoachSessionDto createCoachSessionDto) {
         log.info("Session with id");
         return coachSessionService.registerACoachSession(createCoachSessionDto);
     }

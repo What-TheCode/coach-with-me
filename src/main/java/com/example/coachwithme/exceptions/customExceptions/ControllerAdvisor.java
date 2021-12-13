@@ -1,4 +1,4 @@
-package com.example.coachwithme.exceptions;
+package com.example.coachwithme.exceptions.customExceptions;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
