@@ -25,7 +25,7 @@ public class CoachSession {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "coach_session_seq")
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "topic_id", referencedColumnName = "id")
     private Topic subject;
 
