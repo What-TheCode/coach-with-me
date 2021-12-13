@@ -43,7 +43,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             SecureUserDetails userPass = new ObjectMapper().readValue(request.getInputStream(), SecureUserDetails.class);
             username = userPass.getUsername();
             password = userPass.getPassword();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
