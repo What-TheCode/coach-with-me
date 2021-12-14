@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 public class SessionFeedbackMapper {
 
     public SessionFeedbackDto toDto(SessionFeedback sessionFeedback) {
-        if(sessionFeedback == null) return null;
+        if (sessionFeedback == null) {
+            return null;
+        }
 
         return SessionFeedbackDto.builder()
                 .id(sessionFeedback.getId())

@@ -1,5 +1,6 @@
 package com.example.coachwithme.security;
 
+import com.example.coachwithme.model.user.UserRole;
 import com.example.coachwithme.security.filters.CustomAuthenticationFilter;
 import com.example.coachwithme.security.filters.CustomAuthorizationFilter;
 import com.example.coachwithme.service.UserService;
@@ -51,6 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(GET, "/users/check/**").permitAll();
         http.authorizeRequests().antMatchers(POST, "/coaches/becomecoach").permitAll();
         http.authorizeRequests().antMatchers(PUT, "/coaches/**").permitAll();
+        http.authorizeRequests().antMatchers(GET, "/admin/**").hasAuthority(UserRole.ADMIN.getRoleName());
+        http.authorizeRequests().antMatchers(POST, "/admin/**").hasAuthority(UserRole.ADMIN.getRoleName());
         //http.authorizeRequests().antMatchers(GET, "/coach/**").hasAnyAuthority(UserRole.COACH.getRoleName());
         //http.authorizeRequests().antMatchers(POST, "/users/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/v3/api-docs/**",

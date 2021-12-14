@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CoachSessionRepository extends JpaRepository<CoachSession,Integer> {
+public interface CoachSessionRepository extends JpaRepository<CoachSession, Integer> {
 
     List<CoachSession> findCoachSessionsByCoachId(int id);
 
