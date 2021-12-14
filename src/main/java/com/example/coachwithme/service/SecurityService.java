@@ -51,9 +51,14 @@ public class SecurityService {
     }
 
     public void assertIfTheEmailIsExisting(String email) {
-        if (userRepository.findByEmail(email) != null) {
+        if (isaBoolean(email)) {
             throw new NotUniqueEmailException("Email address already exists.");
         }
+    }
+
+
+    boolean isaBoolean(String email) {
+        return userRepository.findByEmail(email) != null;
     }
 
 }
