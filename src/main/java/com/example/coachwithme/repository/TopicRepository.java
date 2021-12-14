@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface TopicRepository extends JpaRepository<Topic, Integer> {
 
     Topic findByName(String name);
+
+    Topic findByNameIgnoreCase(String name);
 }

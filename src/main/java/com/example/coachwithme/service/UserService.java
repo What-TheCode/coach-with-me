@@ -86,7 +86,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto upGradeToCoach(int userId) {
-        securityService.assertIfUserIdExist(userId);
+        securityService.assertIfUserIdMatchesJWTTokenId(userId);
         User userToUpgrade = userRepository.getById(userId);
         userToUpgrade.addUserRole(UserRole.COACH);
 

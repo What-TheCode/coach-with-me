@@ -28,8 +28,7 @@ public class TopicMapper {
     }
 
     public Topic toEntity(CreateTopicDto createTopicDto) {
-
-        Topic topic = topicRepository.findByName(createTopicDto.getName());
+        Topic topic = topicRepository.findByNameIgnoreCase(createTopicDto.getName().trim());
         if (topic != null) {
             return topic;
         }
@@ -38,5 +37,4 @@ public class TopicMapper {
                 .name(createTopicDto.getName())
                 .build();
     }
-
 }
