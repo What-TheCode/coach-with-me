@@ -1,5 +1,6 @@
 package com.example.coachwithme.mapper.user;
 
+import com.example.coachwithme.dto.user.CoachDto;
 import com.example.coachwithme.dto.user.CreateUserDto;
 import com.example.coachwithme.dto.user.UserDto;
 import com.example.coachwithme.mapper.user.coach.CoachDetailMapper;
@@ -7,6 +8,7 @@ import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -53,6 +55,17 @@ public class UserMapper {
                 .userRoles(user.getUserRoles())
                 .pictureUrl(user.getPictureUrl())
                 .coachDetails(this.coachDetailMapper.toDto(user.getCoachDetails()))
+                .build();
+    }
+
+
+    public CoachDto toCoachDto(User user) {
+        return CoachDto.builder()
+                .id(user.getId())
+                .name(this.nameMapper.toDto(user.getName()))
+                .userRoles(user.getUserRoles())
+                .pictureUrl(user.getPictureUrl())
+                .topicDto(List.of(this.coachDetailMapper.toDto(user.getCoachDetails()).getCoachExperiences().get(0).getTopic()))
                 .build();
     }
 }

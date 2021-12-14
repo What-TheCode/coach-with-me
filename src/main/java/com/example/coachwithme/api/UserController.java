@@ -1,5 +1,6 @@
 package com.example.coachwithme.api;
 
+import com.example.coachwithme.dto.user.CoachDto;
 import com.example.coachwithme.dto.user.CreateUserDto;
 import com.example.coachwithme.dto.user.UpdateUserDto;
 import com.example.coachwithme.dto.user.UserDto;
@@ -10,14 +11,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -49,4 +56,18 @@ public class UserController {
     }
 
 
+    // show the page of all coaches
+    //Filter by name and email and Topic will be implemented in the frontend
+    @GetMapping(path = "/findACoach", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<CoachDto> findCoach(){
+        return userService.getTheCoaches();
+    }
+
+    @GetMapping(path = "/coaches/{coachId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public UserDto getCoachOverview(@PathVariable int coachId) {
+        log.info("Coach Overview for coach with ID :" + coachId + " is requested.");
+        return userService.showCoachProfileInfo(coachId);
+    }
 }

@@ -1,8 +1,7 @@
 package com.example.coachwithme.service;
 
-import com.example.coachwithme.dto.user.CreateUserDto;
-import com.example.coachwithme.dto.user.UpdateUserDto;
-import com.example.coachwithme.dto.user.UserDto;
+import com.example.coachwithme.dto.coachsession.topic.TopicDto;
+import com.example.coachwithme.dto.user.*;
 import com.example.coachwithme.dto.user.coach.UpdateCoachDto;
 import com.example.coachwithme.exceptions.customExceptions.CoachCanNotTeachTopicException;
 import com.example.coachwithme.exceptions.customExceptions.UserDoesNotExistException;
@@ -23,10 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.List.of;
 
 @Service
 @Transactional
@@ -97,6 +96,21 @@ public class UserService implements UserDetailsService {
         return userMapper.toDto(userToUpgrade);
     }
 
+
+    public List<CoachDto> getTheCoaches() {
+      return userRepository.findAll()
+                .stream()
+                .filter(role -> role.getUserRoles().contains(UserRole.COACH))
+                .filter(coachDetails -> coachDetails.getCoachDetails() != null)
+                .map(userMapper::toCoachDto)
+                .collect(Collectors.toList());
+    }
+
+    public UserDto showCoachProfileInfo(int coachId) {
+        assertCheckIfTheUserIsCoach(coachId);
+        return userMapper.toDto(userRepository.findById(coachId).get());
+    }
+
     //TODO The returning json gives id 0 back for the topicExperiences -> this is not correct
     // fix that it not always gives a new entry in the database
     // refactor
@@ -135,5 +149,14 @@ public class UserService implements UserDetailsService {
             throw new CoachCanNotTeachTopicException("This coach can not teach this topic.");
         }
     }
+
+
+    private void assertCheckIfTheUserIsCoach(int coachId){
+        User user = userRepository.findById(coachId).get();
+        if(!user.getUserRoles().contains(UserRole.COACH)){
+            throw new CoachCanNotTeachTopicException("This person is not Coach..!");
+        }
+    }
+
 }
 
