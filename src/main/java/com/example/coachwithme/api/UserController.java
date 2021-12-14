@@ -40,7 +40,7 @@ public class UserController {
         return userService.showUserProfileInfo(userId);
     }
 
-    @PutMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/{userId}/edit", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public UserDto editUserOverview(@PathVariable int userId,
                                     @Valid @RequestBody UpdateUserDto updateUserDto) {

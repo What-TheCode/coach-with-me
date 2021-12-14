@@ -47,8 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests().antMatchers(OPTIONS, "/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/users/login/**").permitAll();
         http.authorizeRequests().antMatchers(POST, "/users").permitAll();
+        http.authorizeRequests().antMatchers(PUT, "/users/**").permitAll();
         http.authorizeRequests().antMatchers(POST, "/users/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/findACoach").permitAll();
 
@@ -84,6 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfig.addAllowedMethod("PUT");
         corsConfig.addAllowedMethod("PATCH");
         corsConfig.addAllowedMethod("DELETE");
+        corsConfig.addAllowedMethod("OPTIONS");
 
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
