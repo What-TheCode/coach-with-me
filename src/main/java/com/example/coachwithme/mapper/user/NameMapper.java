@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class NameMapper {
 
-    public NameDto toDto(Name name){
+    public NameDto toDto(Name name) {
         return NameDto.builder()
                 .firstName(name.getFirstName())
                 .lastName(name.getLastName())
                 .build();
     }
 
-    public Name toEntity(NameDto nameDto){
+    public Name toEntity(NameDto nameDto) {
         return Name.builder()
                 .firstName(nameDto.getFirstName())
                 .lastName(nameDto.getLastName())

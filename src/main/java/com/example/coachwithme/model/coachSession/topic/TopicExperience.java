@@ -23,7 +23,7 @@ public class TopicExperience {
     @Column(name = "experience")
     private int experience;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "topic_id")
     private Topic topic;
 

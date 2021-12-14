@@ -4,16 +4,14 @@ import com.example.coachwithme.dto.user.CreateUserDto;
 import com.example.coachwithme.dto.user.UpdateUserDto;
 import com.example.coachwithme.dto.user.UserDto;
 import com.example.coachwithme.dto.user.coach.UpdateCoachDto;
-import com.example.coachwithme.exceptions.CoachCanNotTeachTopicException;
+import com.example.coachwithme.exceptions.customExceptions.CoachCanNotTeachTopicException;
 import com.example.coachwithme.exceptions.customExceptions.UserDoesNotExistException;
 import com.example.coachwithme.exceptions.customExceptions.UserIsNotACoachException;
 import com.example.coachwithme.mapper.user.NameMapper;
 import com.example.coachwithme.mapper.user.UserMapper;
-import com.example.coachwithme.mapper.user.coach.CoachDetailMapper;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import com.example.coachwithme.model.user.coach.CoachDetails;
-import com.example.coachwithme.repository.TopicRepository;
 import com.example.coachwithme.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,10 +36,8 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final CoachDetailMapper coachDetailMapper;
     private final NameMapper nameMapper;
     private final PasswordEncoder passwordEncoder;
-    private final TopicRepository topicRepository;
     private final SecurityService securityService;
 
     @Override

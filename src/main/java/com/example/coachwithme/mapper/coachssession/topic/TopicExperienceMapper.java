@@ -18,7 +18,7 @@ public class TopicExperienceMapper {
         this.topicMapper = topicMapper;
     }
 
-    public TopicExperienceDto toDto(TopicExperience topicExperience){
+    public TopicExperienceDto toDto(TopicExperience topicExperience) {
         return TopicExperienceDto.builder()
                 .id(topicExperience.getId())
                 .experience(topicExperience.getExperience())
@@ -26,7 +26,7 @@ public class TopicExperienceMapper {
                 .build();
     }
 
-    public TopicExperience toEntity(TopicExperienceDto topicExperienceDto){
+    public TopicExperience toEntity(TopicExperienceDto topicExperienceDto) {
         return TopicExperience.builder()
                 .id(topicExperienceDto.getId())
                 .experience(topicExperienceDto.getExperience())
@@ -34,23 +34,23 @@ public class TopicExperienceMapper {
                 .build();
     }
 
-    public TopicExperience toEntity(CreateTopicExperienceDto createTopicExperienceDto){
+    public TopicExperience toEntity(CreateTopicExperienceDto createTopicExperienceDto) {
         return TopicExperience.builder()
                 .experience(createTopicExperienceDto.getExperience())
                 .topic(topicMapper.toEntity(createTopicExperienceDto.getTopic()))
                 .build();
     }
 
-    public List<TopicExperience> toEntities(List<TopicExperienceDto> topicExperienceDtos){
+    public List<TopicExperience> toEntities(List<TopicExperienceDto> topicExperienceDtos) {
         return topicExperienceDtos.stream().map(this::toEntity).collect(Collectors.toList());
     }
 
-    public List<TopicExperience> fromCreateDtoToEntities(List<CreateTopicExperienceDto> createTopicExperienceDtos){
+    public List<TopicExperience> fromCreateDtoToEntities(List<CreateTopicExperienceDto> createTopicExperienceDtos) {
         return createTopicExperienceDtos.stream().map(this::toEntity).collect(Collectors.toList());
     }
 
-    public List<TopicExperienceDto> toDtos(List<TopicExperience> topicExperiences){
-        if(topicExperiences == null){
+    public List<TopicExperienceDto> toDtos(List<TopicExperience> topicExperiences) {
+        if (topicExperiences == null) {
             return new ArrayList<>();
         }
         return topicExperiences.stream().map(this::toDto).collect(Collectors.toList());

@@ -1,15 +1,12 @@
 package com.example.coachwithme.dto.coachsession;
 
 import com.example.coachwithme.model.Location;
-import com.example.coachwithme.model.coachSession.SessionState;
-import com.example.coachwithme.model.coachSession.topic.Topic;
-import com.example.coachwithme.model.user.User;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 @Builder
