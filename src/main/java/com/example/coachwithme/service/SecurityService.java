@@ -56,7 +56,7 @@ public class SecurityService {
 
     public void assertIfUserIdExist(int userId) {
         if (userRepository.findById(userId).isEmpty()) {
-            throw new UserDoesNotExistException("user with " + userId + " is not Existed");
+            throw new UserDoesNotExistException("user with id " + userId + " does not exist");
         }
     }
 
@@ -65,7 +65,6 @@ public class SecurityService {
             throw new NotUniqueEmailException("Email address already exists.");
         }
     }
-
 
     boolean isaBoolean(String email) {
         return userRepository.findByEmail(email) != null;
