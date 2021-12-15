@@ -26,7 +26,7 @@ public class CoachController {
         return userService.upGradeToCoach(userId);
     }
 
-    @PutMapping(path = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public UserDto updateCoach(@PathVariable int userId, @Valid @RequestBody UpdateCoachDto updateCoachDto) {
         return userService.updateCoach(userId, updateCoachDto);
