@@ -1,8 +1,8 @@
 package com.example.coachwithme.service;
 
-import com.example.coachwithme.dto.coachsession.UpdateCoachSessionDto;
 import com.example.coachwithme.exceptions.customExceptions.*;
 import com.example.coachwithme.model.coachSession.CoachSession;
+import com.example.coachwithme.model.coachSession.SessionState;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import com.example.coachwithme.repository.CoachSessionRepository;
@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Objects;
 
 @Service
 @Transactional
@@ -85,6 +84,12 @@ public class SecurityService {
     public void assertIfCoachSessionExistAndUserIsIntCoachSession(int coachSessionId) {
         if (coachSessionRepository.findById(coachSessionId).isEmpty()){
             throw new CoachSessionDoesNotExistException("This coachsession does not exist.");
+        }
+    }
+
+    public void assertIfSessionStateIsAllowedToChange(int coachSessionId, int userId, SessionState sessionState) {
+        if(!userRepository.getById(userId).getUserRoles().contains(UserRole.COACH)){
+
         }
     }
 }

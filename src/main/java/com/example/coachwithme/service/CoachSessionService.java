@@ -2,7 +2,6 @@ package com.example.coachwithme.service;
 
 import com.example.coachwithme.dto.coachsession.CoachSessionDto;
 import com.example.coachwithme.dto.coachsession.CreateCoachSessionDto;
-import com.example.coachwithme.dto.coachsession.UpdateCoachSessionDto;
 import com.example.coachwithme.mapper.coachssession.CoachSessionMapper;
 import com.example.coachwithme.model.coachSession.CoachSession;
 import com.example.coachwithme.model.coachSession.SessionState;
@@ -26,6 +25,7 @@ public class CoachSessionService {
 
 
     public CoachSessionDto registerACoachSession(CreateCoachSessionDto createCoachSessionDto) {
+
         sessionValidation(createCoachSessionDto);
         this.securityService.assertIfUserIdMatchesJWTTokenId(createCoachSessionDto.getCoacheeId());
 
@@ -56,19 +56,14 @@ public class CoachSessionService {
         userService.assertIfCoachCanTeachTopic(createCoachSessionDto.getCoachId(), createCoachSessionDto.getTopicId());
     }
 
-    public CoachSessionDto updateCoachSession(int coachSessionId, UpdateCoachSessionDto updateCoachSessionDto) {
-        this.securityService.assertIfUserIdMatchesJWTTokenId(updateCoachSessionDto.getUserId());
+    public CoachSessionDto updateCoachSession(int coachSessionId,int userId, SessionState sessionState) {
         this.securityService.assertIfCoachSessionExistAndUserIsIntCoachSession(coachSessionId);
-        this.securityService.assertIfUserIsInTheCoachSession(coachSessionId,updateCoachSessionDto.getUserId());
-
+        this.securityService.assertIfUserIsInTheCoachSession(coachSessionId, userId);
+        this.securityService.assertIfSessionStateIsAllowedToChange(coachSessionId,userId,sessionState);
         CoachSession coachSessionToUpdate = coachSessionRepository.findById(coachSessionId).get();
-        coachSessionToUpdate.setState(updateCoachSessionDto.getState());
+        coachSessionToUpdate.setState(sessionState);
         return coachSessionMapper.toDto(coachSessionToUpdate);
     }
 
-    //
 
-//    public void assertIfCoachSessionIsInTheFuture(CreateCoachSessionDto createCoachSessionDto){
-//        LocalDateTime
-//    }
 }
