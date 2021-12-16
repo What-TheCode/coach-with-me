@@ -57,7 +57,8 @@ public class CoachSessionService {
     }
 
     public CoachSessionDto updateCoachSession(int coachSessionId,int userId, SessionState sessionState) {
-        this.securityService.assertIfCoachSessionExistAndUserIsIntCoachSession(coachSessionId);
+        this.securityService.assertIfUserIdMatchesJWTTokenId(userId);
+        this.securityService.assertIfCoachSessionExist(coachSessionId);
         this.securityService.assertIfUserIsInTheCoachSession(coachSessionId, userId);
         this.securityService.assertIfSessionStateIsAllowedToChange(coachSessionId,userId,sessionState);
         CoachSession coachSessionToUpdate = coachSessionRepository.findById(coachSessionId).get();

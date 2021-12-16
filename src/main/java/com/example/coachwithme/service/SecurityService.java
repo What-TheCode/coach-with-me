@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -22,6 +23,10 @@ public class SecurityService {
 
     private UserRepository userRepository;
     private CoachSessionRepository coachSessionRepository;
+    private final static List<SessionState> REQUESTED_STATE_TO_STATE_ACCEPTED_OR_DECLINED_BY_COACH = List.of(SessionState.ACCEPTED, SessionState.DECLINED);
+    private final static SessionState REQUESTED_STATE_TO_CANCELED_BY_COACHEE = SessionState.CANCELED_BY_COACHEE;
+    private final static SessionState ACCEPTED_STATE_TO_OTHER_STATE_BY_COACH = SessionState.CANCELED_BY_COACH;
+    private final static SessionState ACCEPTED_STATE_TO_OTHER_STATE_BY_COACHEE = SessionState.CANCELED_BY_COACHEE;
 
     public void assertIfUserIdMatchesJWTTokenId(int userId) {
         assertIfUserIdExist(userId);
@@ -75,21 +80,39 @@ public class SecurityService {
 
     public void assertIfUserIsInTheCoachSession(int coachSessionId, int userId) {
         CoachSession coachSession = coachSessionRepository.getById(coachSessionId);
-        if (coachSession.getCoach().getId() != userId && coachSession.getCoachee().getId() != userId){
+        if (coachSession.getCoach().getId() != userId && coachSession.getCoachee().getId() != userId) {
             throw new UserIsNotInCoachSessionException("User is not in this coachsession and therefore can not change the state of it.");
         }
 
     }
 
-    public void assertIfCoachSessionExistAndUserIsIntCoachSession(int coachSessionId) {
-        if (coachSessionRepository.findById(coachSessionId).isEmpty()){
+    public void assertIfCoachSessionExist(int coachSessionId) {
+        if (coachSessionRepository.findById(coachSessionId).isEmpty()) {
             throw new CoachSessionDoesNotExistException("This coachsession does not exist.");
         }
     }
 
     public void assertIfSessionStateIsAllowedToChange(int coachSessionId, int userId, SessionState sessionState) {
-        if(!userRepository.getById(userId).getUserRoles().contains(UserRole.COACH)){
+        SessionState coachSessionState = coachSessionRepository.getById(coachSessionId).getState();
+        if (coachSessionState.equals(SessionState.CANCELED_BY_COACH) || coachSessionState.equals(SessionState.CANCELED_BY_COACHEE) || coachSessionState.equals(SessionState.FINISHED) || coachSessionState.equals(SessionState.DECLINED)) {
+            throw new WrongSessionStateException("The coach session can not change states after being canceled, finished or declined.");
 
+        }
+        if (coachSessionRepository.getById(coachSessionId).getCoach().getId() != userId) {
+            if (coachSessionRepository.getById(coachSessionId).getState().equals(SessionState.REQUESTED) && !REQUESTED_STATE_TO_CANCELED_BY_COACHEE.equals(sessionState)) {
+                throw new WrongSessionStateException("A Coachee can not change the coach session to this state: " + sessionState);
+            }
+            if (coachSessionRepository.getById(coachSessionId).getState().equals(SessionState.ACCEPTED) && !ACCEPTED_STATE_TO_OTHER_STATE_BY_COACHEE.equals(sessionState)) {
+                throw new WrongSessionStateException("A Coachee can not change the coach session to this state: " + sessionState);
+            }
+
+        } else {
+            if (coachSessionRepository.getById(coachSessionId).getState().equals(SessionState.REQUESTED) && !REQUESTED_STATE_TO_STATE_ACCEPTED_OR_DECLINED_BY_COACH.contains(sessionState)) {
+                throw new WrongSessionStateException("A Coach can not change the coach session to this state: " + sessionState);
+            }
+            if (coachSessionRepository.getById(coachSessionId).getState().equals(SessionState.ACCEPTED) && !ACCEPTED_STATE_TO_OTHER_STATE_BY_COACH.equals(sessionState)) {
+                throw new WrongSessionStateException("A Coach can not change the coach session to this state: " + sessionState);
+            }
         }
     }
 }
