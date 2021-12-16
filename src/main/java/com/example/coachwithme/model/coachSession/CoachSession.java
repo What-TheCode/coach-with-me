@@ -3,10 +3,7 @@ package com.example.coachwithme.model.coachSession;
 import com.example.coachwithme.model.Location;
 import com.example.coachwithme.model.coachSession.topic.Topic;
 import com.example.coachwithme.model.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -58,4 +55,7 @@ public class CoachSession {
     @JoinColumn(name = "session_feedback_id", referencedColumnName = "id")
     private SessionFeedback feedback;
 
+    public void setState(SessionState state) {
+        this.state = state;
+    }
 }

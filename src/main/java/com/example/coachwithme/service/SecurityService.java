@@ -1,10 +1,11 @@
 package com.example.coachwithme.service;
 
-import com.example.coachwithme.exceptions.customExceptions.NoPermissionsException;
-import com.example.coachwithme.exceptions.customExceptions.NotUniqueEmailException;
-import com.example.coachwithme.exceptions.customExceptions.UserDoesNotExistException;
+import com.example.coachwithme.dto.coachsession.UpdateCoachSessionDto;
+import com.example.coachwithme.exceptions.customExceptions.*;
+import com.example.coachwithme.model.coachSession.CoachSession;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
+import com.example.coachwithme.repository.CoachSessionRepository;
 import com.example.coachwithme.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -20,6 +22,7 @@ import javax.transaction.Transactional;
 public class SecurityService {
 
     private UserRepository userRepository;
+    private CoachSessionRepository coachSessionRepository;
 
     public void assertIfUserIdMatchesJWTTokenId(int userId) {
         assertIfUserIdExist(userId);
@@ -61,13 +64,27 @@ public class SecurityService {
     }
 
     public void assertIfTheEmailIsExisting(String email) {
-        if (isaBoolean(email)) {
+        if (isEmailFoundInTheDatabase(email)) {
             throw new NotUniqueEmailException("Email address already exists.");
         }
     }
 
-    boolean isaBoolean(String email) {
+    boolean isEmailFoundInTheDatabase(String email) {
         return userRepository.findByEmail(email) != null;
     }
 
+
+    public void assertIfUserIsInTheCoachSession(int coachSessionId, int userId) {
+        CoachSession coachSession = coachSessionRepository.getById(coachSessionId);
+        if (coachSession.getCoach().getId() != userId && coachSession.getCoachee().getId() != userId){
+            throw new UserIsNotInCoachSessionException("User is not in this coachsession and therefore can not change the state of it.");
+        }
+
+    }
+
+    public void assertIfCoachSessionExistAndUserIsIntCoachSession(int coachSessionId) {
+        if (coachSessionRepository.findById(coachSessionId).isEmpty()){
+            throw new CoachSessionDoesNotExistException("This coachsession does not exist.");
+        }
+    }
 }

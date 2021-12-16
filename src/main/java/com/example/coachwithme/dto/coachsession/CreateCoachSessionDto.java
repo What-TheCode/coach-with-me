@@ -22,7 +22,6 @@ public class CreateCoachSessionDto {
     private LocalDate date;
 
     @NotBlank(message = "Time cannot be empty")
-//    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "HH:mm:ss[.SSS][.SS][.S]")
     private String time;
 
     private Location location;

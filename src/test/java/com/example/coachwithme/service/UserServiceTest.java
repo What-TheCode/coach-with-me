@@ -24,6 +24,8 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.naming.NoPermissionException;
@@ -37,9 +39,12 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@DataJpaTest
 class UserServiceTest {
 
-    @Mock
+    @Autowired
+    private UserRepository userRepository;
+
     private UserService userServiceMock;
 
     @Mock
@@ -80,6 +85,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setup() {
+//
 //        userRepositoryMock = Mockito.mock(UserRepository.class);
 //        userMapperMock = Mockito.mock(UserMapper.class);
 //        coachDetailMapperMock = Mockito.mock(CoachDetailMapper.class);
@@ -87,15 +93,6 @@ class UserServiceTest {
 //        passwordEncoderMock = Mockito.mock(PasswordEncoder.class);
 //        topicRepositoryMock = Mockito.mock(TopicRepository.class);
 //        securityServiceMock = Mockito.mock(SecurityService.class);
-
-//        userServiceMock = Mockito.mock(UserService.class);
-        userRepositoryMock = Mockito.mock(UserRepository.class);
-        userMapperMock = Mockito.mock(UserMapper.class);
-        coachDetailMapperMock = Mockito.mock(CoachDetailMapper.class);
-        nameMapperMock = Mockito.mock(NameMapper.class);
-        passwordEncoderMock = Mockito.mock(PasswordEncoder.class);
-        topicRepositoryMock = Mockito.mock(TopicRepository.class);
-        securityServiceMock = Mockito.mock(SecurityService.class);
 
         userServiceMock = new UserService(userRepositoryMock,
                 userMapperMock,
@@ -174,15 +171,30 @@ class UserServiceTest {
         }
 
         @Test
+        void whenRegisteringUser_thenTheEmailIsAsserted() {
+            given(userMapperMock.toEntity(createUserDto)).willReturn(userEntity);
+            userServiceMock.registerUser(createUserDto);
+            Mockito.verify(securityServiceMock).assertIfTheEmailIsExisting("super@man.org");
+
+        }
+
+        @Test
+        @Disabled
         void whenRegisteringUserWithAUsedEmail_ThenAnExceptionIsThrown() {
             //GIVEN
-            given(securityServiceMock.isaBoolean(any())).willReturn(true);
+            String emailInDatabase ="super@man.org";
+
+
+            userRepository.save(userEntity);
+            given(userMapperMock.toEntity(createUserDto)).willReturn(userEntity);
+//            given(userRepositoryMock.findByEmail(emailInDatabase)).willReturn(userEntity);
+
             //WHEN
 
             //THEN
             assertThatThrownBy(() -> userServiceMock.registerUser(createUserDto))
                     .isInstanceOf(NotUniqueEmailException.class)
-                    .hasMessage("Email address already exists.");
+                    .hasMessage("400 BAD_REQUEST \"Email address already exists.\"");
             verify(userRepositoryMock, never()).save(any());
         }
 
