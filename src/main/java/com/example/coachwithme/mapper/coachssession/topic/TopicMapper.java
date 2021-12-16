@@ -16,14 +16,14 @@ public class TopicMapper {
     public TopicDto toDto(Topic topic) {
         return TopicDto.builder()
                 .id(topic.getId())
-                .name(topic.getName())
+                .topicName(topic.getName())
                 .build();
     }
 
     public Topic toEntity(TopicDto topicDto) {
         return Topic.builder()
                 .id(topicDto.getId())
-                .name(topicDto.getName())
+                .name(topicDto.getTopicName())
                 .build();
     }
 
