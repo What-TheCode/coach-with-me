@@ -2,6 +2,7 @@ package com.example.coachwithme.dto.user;
 
 
 import com.example.coachwithme.dto.coachsession.topic.TopicDto;
+import com.example.coachwithme.dto.coachsession.topic.TopicExperienceDto;
 import com.example.coachwithme.dto.user.coach.CoachDetailsDto;
 import com.example.coachwithme.model.coachSession.topic.Topic;
 import com.example.coachwithme.model.user.UserRole;
@@ -23,7 +24,8 @@ public class CoachDto {
     private int id;
     @Valid
     private NameDto name;
-    private List<TopicDto> topicDto;
+    //topic experience Tdo
+    private List<TopicExperienceDto> topicExperienceDtoList;
     @NotBlank(message = "UserRole can not be blank") // not sur if this will work
     private Set<UserRole> userRoles;
     private String pictureUrl;
