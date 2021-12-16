@@ -65,7 +65,7 @@ public class UserMapper {
                 .name(this.nameMapper.toDto(user.getName()))
                 .userRoles(user.getUserRoles())
                 .pictureUrl(user.getPictureUrl())
-                .topicDto(List.of(this.coachDetailMapper.toDto(user.getCoachDetails()).getCoachExperiences().get(0).getTopic()))
+                .topicExperienceDtoList(this.coachDetailMapper.toDto(user.getCoachDetails()).getCoachExperiences())
                 .build();
     }
 }
