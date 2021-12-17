@@ -29,14 +29,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private static final int authenticationTimeInMiliseconds = 10 * 60 * 1000 * 6;
+    private static final int authenticationTimeInMilliseconds = 10 * 60 * 1000 * 6;
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
     @Override
-
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username = null;
         String password = null;
@@ -50,9 +49,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             e.printStackTrace();
         }
 
-        log.info("Username is: {}", username);
-        log.info("Password is: {}", password);
-
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -64,7 +60,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Algorithm algorithm = Algorithm.HMAC256(SecurityConfig.JWT_SECRET.getBytes());
         String accessToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + authenticationTimeInMiliseconds))
+                .withExpiresAt(new Date(System.currentTimeMillis() + authenticationTimeInMilliseconds))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(algorithm);
