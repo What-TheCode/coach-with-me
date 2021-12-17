@@ -25,7 +25,7 @@ public class CreateCoachSessionDto {
 //    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "HH:mm:ss[.SSS][.SS][.S]")
     private String time;
 
-    private Location location;
+    private LocationDto location;
 
     private String remarks;
 

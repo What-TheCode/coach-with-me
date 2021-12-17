@@ -25,7 +25,7 @@ public class CoachSessionService {
     //TODO does coacheeId and coachId need to be include in the arguments? -> how are they added in json?
     //TODO Does the assertIfUserIsACoach method has to be in the userService? -> not private method-> so?
     public CoachSessionDto registerACoachSession(CreateCoachSessionDto createCoachSessionDto) {
-        sessionValidation(createCoachSessionDto);
+//        sessionValidation(createCoachSessionDto);
         this.securityService.assertIfUserIdMatchesJWTTokenId(createCoachSessionDto.getCoacheeId());
 
         CoachSession newCoachSession = coachSessionMapper.toEntity(createCoachSessionDto);
