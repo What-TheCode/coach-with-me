@@ -76,16 +76,8 @@ public class CoachSessionController {
 //    @PreAuthorize("hasAnyRole('COACH')")
     public CoachSessionDto editCoachSessionToDeclined(@PathVariable int coachSessionId,
                                                       @RequestBody Integer userId) {
-        log.info("Coachsession with id " + coachSessionId + " is changed to ACCEPTED.");
+        log.info("Coachsession with id " + coachSessionId + " is changed to DECLINED.");
         return this.coachSessionService.updateCoachSession(coachSessionId,userId,SessionState.DECLINED);
     }
-//
-//    @PostMapping(path = "/decline/{coachSessionId}" ,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-////    @PreAuthorize("hasAnyRole('COACH')")
-//    public CoachSessionDto editCoachSessionToDoneWaitingFeedBack(@PathVariable int coachSessionId,
-//                                                      @RequestBody int userId) {
-//        log.info("Coachsession with id " + coachSessionId + " is changed to ACCEPTED.");
-//        return this.coachSessionService.updateCoachSession(coachSessionId,userId,SessionState.DONE_WAITING_FEEDBACK);
-//    }
+
 }
