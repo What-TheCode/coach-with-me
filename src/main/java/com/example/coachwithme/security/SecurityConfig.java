@@ -46,21 +46,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        //http.authorizeRequests().anyRequest().permitAll();
+
         http.authorizeRequests().antMatchers(OPTIONS, "/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/users/login/**").permitAll();
         http.authorizeRequests().antMatchers(POST, "/users").permitAll();
         http.authorizeRequests().antMatchers(PUT, "/users/**").permitAll();
         http.authorizeRequests().antMatchers(POST, "/users/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/findACoach").permitAll();
+        http.authorizeRequests().antMatchers(GET, "/sessions").permitAll();
 
         http.authorizeRequests().antMatchers(GET, "/users/check/**").permitAll();
         http.authorizeRequests().antMatchers(POST, "/coaches/becomecoach").permitAll();
         http.authorizeRequests().antMatchers(PUT, "/coaches/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/admin/**").hasAuthority(UserRole.ADMIN.getRoleName());
         http.authorizeRequests().antMatchers(POST, "/admin/**").hasAuthority(UserRole.ADMIN.getRoleName());
-        //http.authorizeRequests().antMatchers(GET, "/coach/**").hasAnyAuthority(UserRole.COACH.getRoleName());
-        //http.authorizeRequests().antMatchers(POST, "/users/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/v3/api-docs/**",
                 "/configuration/ui",
                 "/swagger-resources/**",
@@ -87,7 +86,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfig.addAllowedMethod("PATCH");
         corsConfig.addAllowedMethod("DELETE");
         corsConfig.addAllowedMethod("OPTIONS");
-
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);

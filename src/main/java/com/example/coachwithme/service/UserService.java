@@ -104,6 +104,7 @@ public class UserService implements UserDetailsService {
                 .filter(coachDetails -> coachDetails.getCoachDetails() != null)
                 .map(userMapper::toCoachDto)
                 .collect(Collectors.toList());
+
     }
 
     public UserDto showCoachProfileInfo(int coachId) {

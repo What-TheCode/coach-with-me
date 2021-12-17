@@ -24,7 +24,7 @@ public class CreateCoachSessionDto {
     @NotBlank(message = "Time cannot be empty")
     private String time;
 
-    private Location location;
+    private LocationDto location;
 
     private String remarks;
 

@@ -25,8 +25,7 @@ public class CoachSessionService {
 
 
     public CoachSessionDto registerACoachSession(CreateCoachSessionDto createCoachSessionDto) {
-
-        sessionValidation(createCoachSessionDto);
+//        sessionValidation(createCoachSessionDto);
         this.securityService.assertIfUserIdMatchesJWTTokenId(createCoachSessionDto.getCoacheeId());
 
         CoachSession newCoachSession = coachSessionMapper.toEntity(createCoachSessionDto);
