@@ -28,7 +28,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/users/login")) {
+        if (request.getServletPath().equals("/api/login")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -54,6 +54,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     log.error("Error: {}", e.getMessage(), e.fillInStackTrace());
                     response.setHeader("error", e.getMessage());
                     response.setStatus(FORBIDDEN.value());
+                    //response.sendError(FORBIDDEN.value());
 
                     Map<String, String> errors = new HashMap<>();
                     errors.put("error_message", e.getMessage());
