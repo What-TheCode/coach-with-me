@@ -35,6 +35,7 @@ public class CoachSessionMapper {
                 .date(createCoachSessionDto.getDate())
                 .time(LocalTime.parse(createCoachSessionDto.getTime(),
                         DateTimeFormatter.ofPattern("HH:mm")))
+                .remarks(createCoachSessionDto.getRemarks())
                 .location(getTheLocation(createCoachSessionDto.getLocation()))
                 .coach(userRepository.getById(createCoachSessionDto.getCoachId()))
                 .coachee(userRepository.getById(createCoachSessionDto.getCoacheeId()))

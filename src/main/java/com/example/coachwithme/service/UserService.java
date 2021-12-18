@@ -6,11 +6,13 @@ import com.example.coachwithme.dto.user.coach.UpdateCoachDto;
 import com.example.coachwithme.exceptions.customExceptions.CoachCanNotTeachTopicException;
 import com.example.coachwithme.exceptions.customExceptions.UserDoesNotExistException;
 import com.example.coachwithme.exceptions.customExceptions.UserIsNotACoachException;
+import com.example.coachwithme.mapper.coachssession.topic.TopicMapper;
 import com.example.coachwithme.mapper.user.NameMapper;
 import com.example.coachwithme.mapper.user.UserMapper;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import com.example.coachwithme.model.user.coach.CoachDetails;
+import com.example.coachwithme.repository.TopicRepository;
 import com.example.coachwithme.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +40,8 @@ public class UserService implements UserDetailsService {
     private final NameMapper nameMapper;
     private final PasswordEncoder passwordEncoder;
     private final SecurityService securityService;
+    private final TopicMapper topicMapper;
+    private final TopicRepository topicRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -152,12 +156,17 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public List<TopicDto> getTopicsNames() {
+        return topicRepository.findAll().stream().map(topicMapper::toDto).collect(Collectors.toList());
+    }
+
     private void assertCheckIfTheUserIsCoach(int coachId){
         User user = userRepository.findById(coachId).get();
         if(!user.getUserRoles().contains(UserRole.COACH)){
             throw new CoachCanNotTeachTopicException("This person is not Coach..!");
         }
     }
+
 
 }
 

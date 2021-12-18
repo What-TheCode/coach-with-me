@@ -1,5 +1,6 @@
 package com.example.coachwithme.api;
 
+import com.example.coachwithme.dto.coachsession.topic.TopicDto;
 import com.example.coachwithme.dto.user.CoachDto;
 import com.example.coachwithme.dto.user.CreateUserDto;
 import com.example.coachwithme.dto.user.UpdateUserDto;
@@ -69,5 +70,12 @@ public class UserController {
     public UserDto getCoachOverview(@PathVariable int coachId) {
         log.info("Coach Overview for coach with ID :" + coachId + " is requested.");
         return userService.showCoachProfileInfo(coachId);
+    }
+
+
+    @GetMapping(path = "/topics", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<TopicDto> getAllTopics() {
+        return userService.getTopicsNames();
     }
 }

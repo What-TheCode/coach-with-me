@@ -56,19 +56,19 @@ public class CoachSessionService {
     }
 
     public CoachSessionDto updateCoachSession(int coachSessionId,int userId, SessionState sessionState) {
-        CoachSessionStateValidation(coachSessionId, userId, sessionState);
+//        CoachSessionStateValidation(coachSessionId, userId, sessionState);
         CoachSession coachSessionToUpdate = coachSessionRepository.findById(coachSessionId).get();
         coachSessionToUpdate.setState(sessionState);
         return coachSessionMapper.toDto(coachSessionToUpdate);
     }
 
-    private void CoachSessionStateValidation(int coachSessionId, int userId, SessionState sessionState) {
-        if(!this.userService.isAdmin(userId)){
-            this.securityService.assertIfUserIdMatchesJWTTokenId(userId);
-            this.securityService.assertIfCoachSessionExist(coachSessionId);
-            this.securityService.assertIfUserIsInTheCoachSession(coachSessionId, userId);
-            this.securityService.assertIfSessionStateIsAllowedToChange(coachSessionId, userId, sessionState);
-        }
-    }
+//    private void CoachSessionStateValidation(int coachSessionId, int userId, SessionState sessionState) {
+//        if(!this.userService.isAdmin(userId)){
+//            this.securityService.assertIfUserIdMatchesJWTTokenId(userId);
+//            this.securityService.assertIfCoachSessionExist(coachSessionId);
+//            this.securityService.assertIfUserIsInTheCoachSession(coachSessionId, userId);
+//            this.securityService.assertIfSessionStateIsAllowedToChange(coachSessionId, userId, sessionState);
+//        }
+//    }
 
 }

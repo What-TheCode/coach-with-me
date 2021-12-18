@@ -94,11 +94,11 @@ class UserServiceTest {
 //        topicRepositoryMock = Mockito.mock(TopicRepository.class);
 //        securityServiceMock = Mockito.mock(SecurityService.class);
 
-        userServiceMock = new UserService(userRepositoryMock,
-                userMapperMock,
-                nameMapperMock,
-                passwordEncoderMock,
-                securityServiceMock);
+//        userServiceMock = new UserService(userRepositoryMock,
+//                userMapperMock,
+//                nameMapperMock,
+//                passwordEncoderMock,
+//                securityServiceMock);
 
         nameDto = NameDto.builder()
                 .firstName("Super")
