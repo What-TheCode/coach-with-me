@@ -105,6 +105,7 @@ public class UserService implements UserDetailsService {
       return userRepository.findAll()
                 .stream()
                 .filter(role -> role.getUserRoles().contains(UserRole.COACH))
+
                 .filter(coachDetails -> coachDetails.getCoachDetails() != null)
                 .map(userMapper::toCoachDto)
                 .collect(Collectors.toList());
@@ -155,6 +156,24 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public List<CoachDto> getTheCoachesByTopic(String topicSelectedName) {
+
+        return userRepository.findAll()
+                .stream()
+                .filter(role -> role.getUserRoles().contains(UserRole.COACH))
+                .filter(coachDetails -> coachDetails.getCoachDetails() != null)
+
+
+                .filter(topicName->
+                        topicName.getCoachDetails().getCoachExperiences()
+                                .stream()
+
+                                .allMatch(topic -> topic.getTopic().getName().toLowerCase().contains(topicSelectedName.toLowerCase())))
+                .map(userMapper::toCoachDto)
+                .collect(Collectors.toList());
+
+    }
+
 
     public List<TopicDto> getTopicsNames() {
         return topicRepository.findAll().stream().map(topicMapper::toDto).collect(Collectors.toList());
@@ -166,6 +185,7 @@ public class UserService implements UserDetailsService {
             throw new CoachCanNotTeachTopicException("This person is not Coach..!");
         }
     }
+
 
 
 }

@@ -6,15 +6,18 @@ import com.example.coachwithme.dto.user.CreateUserDto;
 import com.example.coachwithme.dto.user.UpdateUserDto;
 import com.example.coachwithme.dto.user.UserDto;
 import com.example.coachwithme.service.UserService;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,7 +27,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
 
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,12 +60,18 @@ public class UserController {
 
 
     // show the page of all coaches
-    //Filter by name and email and Topic will be implemented in the frontend
+    //Filter by name and email will be implemented in the frontend
+    // Filter by topic will be here is optional
     @GetMapping(path = "/findACoach", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<CoachDto> findCoach(){
+    public List<CoachDto> findCoach(@RequestParam(required = false)  String topicSelectedName) {
+        if(topicSelectedName != null) {
+            return userService.getTheCoachesByTopic(topicSelectedName);
+        }
         return userService.getTheCoaches();
     }
+
+
 
     @GetMapping(path = "/coaches/{coachId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -78,4 +86,6 @@ public class UserController {
     public List<TopicDto> getAllTopics() {
         return userService.getTopicsNames();
     }
+
+
 }
