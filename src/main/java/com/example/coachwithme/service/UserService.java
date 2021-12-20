@@ -69,7 +69,6 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto showUserProfileInfo(int userId) {
-//        securityService.assertIfUserIdMatchesJWTTokenId(userId);
         return userMapper.toDto(userRepository.findById(userId).get());
     }
 

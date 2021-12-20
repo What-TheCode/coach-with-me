@@ -6,6 +6,7 @@ import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.security.SecurityConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -68,6 +69,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         Map<String, String> userInfo = new HashMap<>();
         userInfo.put("access_token", accessToken);
         userInfo.put("user_id", String.valueOf(user.getId()));
+        userInfo.put("user_roles", StringUtils.join(user.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toList()), ", "));
 
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), userInfo);
