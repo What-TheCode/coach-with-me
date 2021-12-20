@@ -139,6 +139,7 @@ public class UserService implements UserDetailsService {
 
     public UserDto updateCoachTopicExperience(int userId, List<UpdateTopicExperienceDto> updateTopicExperienceDtos) {
         securityService.assertIfUserIdExist(userId);
+        securityService.assertIfListOnlyHasUniqueTopics(updateTopicExperienceDtos);
         User coachToUpdate = userRepository.findById(userId).get();
         coachToUpdate.getCoachDetails().setCoachExperiences(topicExperienceMapper.fromUpdateDtoToEntities(updateTopicExperienceDtos));
         return showUserProfileInfo(userId);
@@ -187,6 +188,28 @@ public class UserService implements UserDetailsService {
 
     }
 
+
+    public List<TopicDto> getTopicsNames() {
+        return topicRepository.findAll().stream().map(topicMapper::toDto).collect(Collectors.toList());
+    }
+
+    private void assertCheckIfTheUserIsCoach(int coachId) {
+        User user = userRepository.findById(coachId).get();
+        if (!user.getUserRoles().contains(UserRole.COACH)) {
+            throw new CoachCanNotTeachTopicException("This person is not Coach..!");
+        }
+    }
+
+    private void assertIfPictureIsValid(CreateUserDto createUserDto) {
+        if (createUserDto.getPictureUrl() == null || createUserDto.getPictureUrl().isBlank()) {
+            createUserDto.setPictureUrl(DEFAULT_PROFILE_PICTURE);
+            return;
+        }
+
+        if (!createUserDto.getPictureUrl().contains(".jpg") && !createUserDto.getPictureUrl().contains(".jepg") && !createUserDto.getPictureUrl().contains(".png")) {
+            createUserDto.setPictureUrl(DEFAULT_PROFILE_PICTURE);
+        }
+    }
 
     public List<TopicDto> getTopicsNames() {
         return topicRepository.findAll().stream().map(topicMapper::toDto).collect(Collectors.toList());
