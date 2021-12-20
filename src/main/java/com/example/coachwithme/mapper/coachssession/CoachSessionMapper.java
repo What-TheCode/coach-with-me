@@ -59,7 +59,7 @@ public class CoachSessionMapper {
                 .location(coachSession.getLocation())
                 .remarks(coachSession.getRemarks())
                 .coach(this.userMapper.toDto(coachSession.getCoach()))
-                .coachee(this.userMapper.toDto(coachSession.getCoach()))
+                .coachee(this.userMapper.toDto(coachSession.getCoachee()))
                 .state(coachSession.getState())
                 .feedback(this.feedbackMapper.toDto(coachSession.getFeedback()))
                 .build();
