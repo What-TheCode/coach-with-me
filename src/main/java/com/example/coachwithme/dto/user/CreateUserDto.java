@@ -27,5 +27,7 @@ public class CreateUserDto {
     @NotBlank(message = "Password can not be empty")
     private String password;
 
-
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
 }

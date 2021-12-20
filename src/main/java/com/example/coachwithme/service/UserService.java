@@ -32,14 +32,13 @@ import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.util.List.of;
-
 @Service
 @Transactional
 @Slf4j
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
 
+    public static final String DEFAULT_PROFILE_PICTURE = "https://i.imgur.com/5MzuCZy.png";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final NameMapper nameMapper;
@@ -70,6 +69,8 @@ public class UserService implements UserDetailsService {
 
     public UserDto registerUser(CreateUserDto createUserDto) {
         securityService.assertIfTheEmailIsExisting(createUserDto.getEmail());
+        assertIfPictureIsValid(createUserDto);
+
         User user = userMapper.toEntity(createUserDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userMapper.toDto(userRepository.save(user));
@@ -113,7 +114,7 @@ public class UserService implements UserDetailsService {
 
 
     public List<CoachDto> getTheCoaches() {
-      return userRepository.findAll()
+        return userRepository.findAll()
                 .stream()
                 .filter(role -> role.getUserRoles().contains(UserRole.COACH))
 
@@ -191,14 +192,23 @@ public class UserService implements UserDetailsService {
         return topicRepository.findAll().stream().map(topicMapper::toDto).collect(Collectors.toList());
     }
 
-    private void assertCheckIfTheUserIsCoach(int coachId){
+    private void assertCheckIfTheUserIsCoach(int coachId) {
         User user = userRepository.findById(coachId).get();
-        if(!user.getUserRoles().contains(UserRole.COACH)){
+        if (!user.getUserRoles().contains(UserRole.COACH)) {
             throw new CoachCanNotTeachTopicException("This person is not Coach..!");
         }
     }
 
+    private void assertIfPictureIsValid(CreateUserDto createUserDto) {
+        if (createUserDto.getPictureUrl() == null || createUserDto.getPictureUrl().isBlank()) {
+            createUserDto.setPictureUrl(DEFAULT_PROFILE_PICTURE);
+            return;
+        }
 
+        if (!createUserDto.getPictureUrl().contains(".jpg") && !createUserDto.getPictureUrl().contains(".jepg") && !createUserDto.getPictureUrl().contains(".png")) {
+            createUserDto.setPictureUrl(DEFAULT_PROFILE_PICTURE);
+        }
+    }
 
 }
 

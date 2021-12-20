@@ -60,7 +60,6 @@ public class UserController {
         return userService.checkIfPictureUrlExistsInDatabase(userPictureUrl);
     }
 
-
     // show the page of all coaches
     // Filter by name and email will be implemented in the frontend
     // Filter by topic will be here is optional

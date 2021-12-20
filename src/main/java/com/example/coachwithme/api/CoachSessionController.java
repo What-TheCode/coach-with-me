@@ -61,7 +61,6 @@ public class CoachSessionController {
         return this.coachSessionService.updateCoachSession(coachSessionId, userId, SessionState.CANCELED_BY_COACH);
     }
 
-
     @PostMapping(path = "/accept/{coachSessionId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
 //    @PreAuthorize("hasAnyRole('COACH')")
