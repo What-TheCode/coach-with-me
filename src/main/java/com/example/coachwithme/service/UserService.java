@@ -121,7 +121,8 @@ public class UserService implements UserDetailsService {
     // fix that it not always gives a new entry in the database
     // refactor
     public UserDto updateCoach(int userId, UpdateCoachDto updateCoachDto) {
-        securityService.assertIfUserIdExist(userId);
+        securityService.assertIfUserCanModifyProfile(userId);
+
         User coachToUpdate = userRepository.findById(userId)
                 .orElseThrow(() -> new UserDoesNotExistException("This user is not found in the data base"));
 

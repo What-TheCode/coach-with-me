@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,7 +24,7 @@ public class CoachSessionController {
     @ResponseStatus(HttpStatus.CREATED)
 //    @PreAuthorize("hasAnyRole('COACHEE')")
     public CoachSessionDto createSession(@Valid @RequestBody CreateCoachSessionDto createCoachSessionDto) {
-        log.info("Session with coachee with id "+ createCoachSessionDto.getCoacheeId()+" and coach with id "+createCoachSessionDto.getCoachId()+".");
+        log.info("Session with coachee with id " + createCoachSessionDto.getCoacheeId() + " and coach with id " + createCoachSessionDto.getCoachId() + ".");
         return coachSessionService.registerACoachSession(createCoachSessionDto);
     }
 
@@ -44,41 +43,41 @@ public class CoachSessionController {
     }
 
 
-    @PostMapping(path = "/canceledbycoachee/{coachSessionId}" ,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/canceledbycoachee/{coachSessionId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
 //    @PreAuthorize("hasAnyRole('COACHEE')")
     public CoachSessionDto editCoachSessionToCanceledByCoachee(@PathVariable int coachSessionId,
                                                                @RequestBody int userId) {
         log.info("Coachsession with id " + coachSessionId + " is changed to CANCELED_BY_COACHEE.");
-        return this.coachSessionService.updateCoachSession(coachSessionId,userId,SessionState.CANCELED_BY_COACHEE);
+        return this.coachSessionService.updateCoachSession(coachSessionId, userId, SessionState.CANCELED_BY_COACHEE);
     }
 
-    @PostMapping(path = "/canceledbycoach/{coachSessionId}" ,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/canceledbycoach/{coachSessionId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
 //    @PreAuthorize("hasAnyRole('COACH')")
     public CoachSessionDto editCoachSessionToCanceledByCoach(@PathVariable int coachSessionId,
-                                                               @RequestBody int userId) {
+                                                             @RequestBody int userId) {
         log.info("Coachsession with id " + coachSessionId + " is changed to CANCELED_BY_COACH.");
-        return this.coachSessionService.updateCoachSession(coachSessionId,userId,SessionState.CANCELED_BY_COACH);
+        return this.coachSessionService.updateCoachSession(coachSessionId, userId, SessionState.CANCELED_BY_COACH);
     }
 
 
-    @PostMapping(path = "/accept/{coachSessionId}" ,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/accept/{coachSessionId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
 //    @PreAuthorize("hasAnyRole('COACH')")
     public CoachSessionDto editCoachSessionToAccepted(@PathVariable int coachSessionId,
-                                                             @RequestBody Integer userId) {
+                                                      @RequestBody Integer userId) {
         log.info("Coachsession with id " + coachSessionId + " is changed to ACCEPTED.");
-        return this.coachSessionService.updateCoachSession(coachSessionId,userId,SessionState.ACCEPTED);
+        return this.coachSessionService.updateCoachSession(coachSessionId, userId, SessionState.ACCEPTED);
     }
 
-    @PostMapping(path = "/decline/{coachSessionId}" ,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/decline/{coachSessionId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
 //    @PreAuthorize("hasAnyRole('COACH')")
     public CoachSessionDto editCoachSessionToDeclined(@PathVariable int coachSessionId,
                                                       @RequestBody Integer userId) {
         log.info("Coachsession with id " + coachSessionId + " is changed to DECLINED.");
-        return this.coachSessionService.updateCoachSession(coachSessionId,userId,SessionState.DECLINED);
+        return this.coachSessionService.updateCoachSession(coachSessionId, userId, SessionState.DECLINED);
     }
 
 }
