@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
 public class UserController {
@@ -46,11 +46,18 @@ public class UserController {
         return userService.editUserProfileInfo(userId, updateUserDto);
     }
 
-    @GetMapping(path = "/check/{userEmail}", produces = MediaType.TEXT_PLAIN_VALUE)
+    @GetMapping(path = "/checkEmail/{userEmail}", produces = MediaType.TEXT_PLAIN_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String checkIfEmailAlreadyExists(@PathVariable String userEmail) {
         log.info("Checking if email " + userEmail + " already exists");
         return userService.checkIfEmailExistsInDatabase(userEmail);
+    }
+
+    @GetMapping(path = "/checkPicture/{userPictureUrl}", produces = MediaType.TEXT_PLAIN_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String checkIfPictureUrllAlreadyExists(@PathVariable String userPictureUrl) {
+        log.info("Checking if picture url " + userPictureUrl + " already exists");
+        return userService.checkIfPictureUrlExistsInDatabase(userPictureUrl);
     }
 
 

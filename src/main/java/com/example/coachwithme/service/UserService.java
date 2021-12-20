@@ -77,6 +77,10 @@ public class UserService implements UserDetailsService {
         return String.valueOf(userRepository.findByEmail(email) != null);
     }
 
+    public String checkIfPictureUrlExistsInDatabase(String pictureUrl) {
+        return String.valueOf(userRepository.findByPictureUrl(pictureUrl) != null);
+    }
+
     public UserDto editUserProfileInfo(int userId, UpdateUserDto updateUserDto) {
         securityService.assertIfUserCanModifyProfile(userId);
         User userToUpdate = userRepository.getById(userId);
