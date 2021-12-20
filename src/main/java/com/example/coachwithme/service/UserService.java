@@ -75,7 +75,6 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto showUserProfileInfo(int userId) {
-//        securityService.assertIfUserIdMatchesJWTTokenId(userId);
         return userMapper.toDto(userRepository.findById(userId).get());
     }
 
@@ -124,8 +123,11 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto updateCoach(int userId, UpdateCoachDto updateCoachDto) {
-        securityService.assertIfUserIdExist(userId);
-        User coachToUpdate = userRepository.findById(userId).get();
+        securityService.assertIfUserCanModifyProfile(userId);
+
+        User coachToUpdate = userRepository.findById(userId)
+                .orElseThrow(() -> new UserDoesNotExistException("This user is not found in the data base"));
+
         coachToUpdate.getCoachDetails().setCoachIntroduction(updateCoachDto.getCoachIntroduction());
         coachToUpdate.getCoachDetails().setCoachAvailability(updateCoachDto.getCoachAvailability());
         return showUserProfileInfo(userId);
@@ -171,7 +173,7 @@ public class UserService implements UserDetailsService {
                 .filter(coachDetails -> coachDetails.getCoachDetails() != null)
 
 
-                .filter(topicName ->
+                .filter(topicName->
                         topicName.getCoachDetails().getCoachExperiences()
                                 .stream()
 
