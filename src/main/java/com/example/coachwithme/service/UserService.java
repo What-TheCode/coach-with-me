@@ -1,6 +1,7 @@
 package com.example.coachwithme.service;
 
 import com.example.coachwithme.dto.coachsession.topic.TopicDto;
+import com.example.coachwithme.dto.coachsession.topic.UpdateTopicExperienceDto;
 import com.example.coachwithme.dto.user.*;
 import com.example.coachwithme.dto.user.coach.UpdateCoachDto;
 import com.example.coachwithme.exceptions.customExceptions.CoachCanNotTeachTopicException;
@@ -77,6 +78,10 @@ public class UserService implements UserDetailsService {
     public UserDto showUserProfileInfo(int userId) {
 //        securityService.assertIfUserIdMatchesJWTTokenId(userId);
         return userMapper.toDto(userRepository.findById(userId).get());
+    }
+
+    public String checkIfEmailExistsInDatabase(String email) {
+        return String.valueOf(userRepository.findByEmail(email) != null);
     }
 
     public String checkIfPictureUrlExistsInDatabase(String pictureUrl) {
