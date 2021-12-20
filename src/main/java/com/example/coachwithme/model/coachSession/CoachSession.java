@@ -58,4 +58,5 @@ public class CoachSession {
     public void setState(SessionState state) {
         this.state = state;
     }
+
 }

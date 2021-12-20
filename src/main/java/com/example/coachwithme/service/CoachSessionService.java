@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -47,19 +49,26 @@ public class CoachSessionService {
                 this.coachSessionRepository.findCoachSessionsByCoachId(coachId));
     }
 
+    public List<CoachSession> getAllAcceptedCoachSessions() {
+        return coachSessionRepository.findCoachSessionByState(SessionState.ACCEPTED);
+    }
+
+    public List<CoachSession> getAllRequestedCoachSessions() {
+        return coachSessionRepository.findCoachSessionByState(SessionState.REQUESTED);
+    }
+
+    public CoachSessionDto updateCoachSession(int coachSessionId, int userId, SessionState sessionState) {
+//        CoachSessionStateValidation(coachSessionId, userId, sessionState);
+        CoachSession coachSessionToUpdate = coachSessionRepository.findById(coachSessionId).get();
+        coachSessionToUpdate.setState(sessionState);
+        return coachSessionMapper.toDto(coachSessionToUpdate);
+    }
 
     //HELPER METHODS
 
     private void sessionValidation(CreateCoachSessionDto createCoachSessionDto) {
         userService.assertIfUserIsACoach(createCoachSessionDto.getCoachId());
         userService.assertIfCoachCanTeachTopic(createCoachSessionDto.getCoachId(), createCoachSessionDto.getTopicId());
-    }
-
-    public CoachSessionDto updateCoachSession(int coachSessionId,int userId, SessionState sessionState) {
-//        CoachSessionStateValidation(coachSessionId, userId, sessionState);
-        CoachSession coachSessionToUpdate = coachSessionRepository.findById(coachSessionId).get();
-        coachSessionToUpdate.setState(sessionState);
-        return coachSessionMapper.toDto(coachSessionToUpdate);
     }
 
 //    private void CoachSessionStateValidation(int coachSessionId, int userId, SessionState sessionState) {
@@ -70,5 +79,40 @@ public class CoachSessionService {
 //            this.securityService.assertIfSessionStateIsAllowedToChange(coachSessionId, userId, sessionState);
 //        }
 //    }
+
+    public void checkForOverdueRequestedCoachSessions() {
+        log.info("scheduled service - Checking for requested coach Sessions.");
+        for (CoachSession coachSession : getAllRequestedCoachSessions()) {
+            if (isCoachSessionsOverdue(coachSession)) {
+                log.info("Coach session State changed to CANCELED BY SYSTEM because Date is overdue with Id {} ", coachSession.getId());
+                coachSession.setState(SessionState.CANCELED_BY_SYSTEM);
+            }
+        }
+    }
+
+    public void checkForOverdueAcceptedCoachSessions() {
+        log.info("scheduled service - Checking for overdue accepted coach Sessions.");
+        for (CoachSession coachSession : getAllAcceptedCoachSessions()) {
+            if (isCoachSessionsOverdue(coachSession)) {
+                log.info("Coach session State changed to DONE WAITING FEEDBACK because Date is overdue with Id {} ", coachSession.getId());
+                coachSession.setState(SessionState.DONE_WAITING_FEEDBACK);
+            }
+        }
+    }
+
+    private boolean isCoachSessionsOverdue(CoachSession coachSession) {
+        //Check if Sessions Date is before our current date
+        if (coachSession.getDate().isBefore(LocalDate.now())) {
+            return true;
+        }
+
+        //Check if Sessions Date is our current date and time is before out current time
+        if (coachSession.getDate().isEqual(LocalDate.now())) {
+            if (coachSession.getTime().isBefore(LocalTime.now())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

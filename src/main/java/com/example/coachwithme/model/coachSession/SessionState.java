@@ -7,5 +7,6 @@ public enum SessionState {
     DECLINED,
     CANCELED_BY_COACH,
     CANCELED_BY_COACHEE,
+    CANCELED_BY_SYSTEM,
     FINISHED
 }
