@@ -1,5 +1,6 @@
 package com.example.coachwithme.service;
 
+import com.example.coachwithme.dto.coachsession.topic.UpdateTopicExperienceDto;
 import com.example.coachwithme.exceptions.customExceptions.*;
 import com.example.coachwithme.model.coachSession.CoachSession;
 import com.example.coachwithme.model.coachSession.SessionState;
@@ -113,6 +114,12 @@ public class SecurityService {
             if (coachSessionRepository.getById(coachSessionId).getState().equals(SessionState.ACCEPTED) && !ACCEPTED_STATE_TO_OTHER_STATE_BY_COACH.equals(sessionState)) {
                 throw new WrongSessionStateException("A Coach can not change the coach session to this state: " + sessionState);
             }
+        }
+    }
+
+    public void assertIfListOnlyHasUniqueTopics(List<UpdateTopicExperienceDto> updateTopicExperienceDtos) {
+        if(updateTopicExperienceDtos.get(0).getTopicId() == updateTopicExperienceDtos.get(1).getTopicId()){
+            throw new NotUniqueTopicsInTopicExperiencesException("A topic can not be added twice to your teaching list");
         }
     }
 }
