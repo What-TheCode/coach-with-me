@@ -4,6 +4,7 @@ import com.example.coachwithme.model.coachSession.topic.TopicExperience;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "coach_details")
 public class CoachDetails {
+    private final static int MAX_LENGHT_TOPICS = 2;
 
     @Id
     @Column(name = "id")
@@ -33,6 +35,7 @@ public class CoachDetails {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = true)
+    @Size(max=MAX_LENGHT_TOPICS)
     private List<TopicExperience> coachExperiences;
 
 }
