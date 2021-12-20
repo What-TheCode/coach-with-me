@@ -6,17 +6,21 @@ import com.example.coachwithme.dto.user.coach.UpdateCoachDto;
 import com.example.coachwithme.exceptions.customExceptions.CoachCanNotTeachTopicException;
 import com.example.coachwithme.exceptions.customExceptions.UserDoesNotExistException;
 import com.example.coachwithme.exceptions.customExceptions.UserIsNotACoachException;
+import com.example.coachwithme.mapper.coachssession.topic.TopicExperienceMapper;
 import com.example.coachwithme.mapper.coachssession.topic.TopicMapper;
 import com.example.coachwithme.mapper.user.NameMapper;
 import com.example.coachwithme.mapper.user.UserMapper;
+import com.example.coachwithme.model.coachSession.topic.TopicExperience;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import com.example.coachwithme.model.user.coach.CoachDetails;
+import com.example.coachwithme.repository.TopicExperienceRepository;
 import com.example.coachwithme.repository.TopicRepository;
 import com.example.coachwithme.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,10 +42,12 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final NameMapper nameMapper;
+    private final TopicExperienceMapper topicExperienceMapper;
     private final PasswordEncoder passwordEncoder;
     private final SecurityService securityService;
     private final TopicMapper topicMapper;
     private final TopicRepository topicRepository;
+    private final TopicExperienceRepository topicExperienceRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -69,12 +75,11 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto showUserProfileInfo(int userId) {
-//        securityService.assertIfUserIdMatchesJWTTokenId(userId);
         return userMapper.toDto(userRepository.findById(userId).get());
     }
 
-    public String checkIfEmailExistsInDatabase(String email) {
-        return String.valueOf(userRepository.findByEmail(email) != null);
+    public String checkIfPictureUrlExistsInDatabase(String pictureUrl) {
+        return String.valueOf(userRepository.findByPictureUrl(pictureUrl) != null);
     }
 
     public UserDto editUserProfileInfo(int userId, UpdateUserDto updateUserDto) {
@@ -117,17 +122,21 @@ public class UserService implements UserDetailsService {
         return userMapper.toDto(userRepository.findById(coachId).get());
     }
 
-    //TODO The returning json gives id 0 back for the topicExperiences -> this is not correct
-    // fix that it not always gives a new entry in the database
-    // refactor
     public UserDto updateCoach(int userId, UpdateCoachDto updateCoachDto) {
-        securityService.assertIfUserIdExist(userId);
+        securityService.assertIfUserCanModifyProfile(userId);
+
         User coachToUpdate = userRepository.findById(userId)
                 .orElseThrow(() -> new UserDoesNotExistException("This user is not found in the data base"));
 
         coachToUpdate.getCoachDetails().setCoachIntroduction(updateCoachDto.getCoachIntroduction());
         coachToUpdate.getCoachDetails().setCoachAvailability(updateCoachDto.getCoachAvailability());
-        userRepository.save(coachToUpdate);
+        return showUserProfileInfo(userId);
+    }
+
+    public UserDto updateCoachTopicExperience(int userId, List<UpdateTopicExperienceDto> updateTopicExperienceDtos) {
+        securityService.assertIfUserIdExist(userId);
+        User coachToUpdate = userRepository.findById(userId).get();
+        coachToUpdate.getCoachDetails().setCoachExperiences(topicExperienceMapper.fromUpdateDtoToEntities(updateTopicExperienceDtos));
         return showUserProfileInfo(userId);
     }
 
