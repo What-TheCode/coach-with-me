@@ -1,7 +1,5 @@
-package com.example.coachwithme.model.coachSession;
+package com.example.coachwithme.model.coachSession.feedback;
 
-import com.example.coachwithme.model.user.UserFeedback;
-import com.example.coachwithme.model.user.coach.CoachFeedback;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,10 +21,17 @@ public class SessionFeedback {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_feedback_id", referencedColumnName = "id")
-    private UserFeedback userFeedback;
+    private CoacheeFeedback coacheeFeedback;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "coach_feedback_id", referencedColumnName = "id")
     private CoachFeedback coachFeedback;
 
+    public void setCoacheeFeedback(CoacheeFeedback coacheeFeedback) {
+        this.coacheeFeedback = coacheeFeedback;
+    }
+
+    public void setCoachFeedback(CoachFeedback coachFeedback) {
+        this.coachFeedback = coachFeedback;
+    }
 }

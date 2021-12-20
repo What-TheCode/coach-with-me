@@ -1,6 +1,7 @@
 package com.example.coachwithme.model.coachSession;
 
 import com.example.coachwithme.model.Location;
+import com.example.coachwithme.model.coachSession.feedback.SessionFeedback;
 import com.example.coachwithme.model.coachSession.topic.Topic;
 import com.example.coachwithme.model.user.User;
 import lombok.*;
@@ -59,4 +60,7 @@ public class CoachSession {
         this.state = state;
     }
 
+    public void setFeedback(SessionFeedback feedback) {
+        this.feedback = feedback;
+    }
 }

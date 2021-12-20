@@ -35,7 +35,10 @@ public class CoachDetails {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = true)
-    @Size(max=MAX_LENGHT_TOPICS)
+    @Size(max = MAX_LENGHT_TOPICS)
     private List<TopicExperience> coachExperiences;
 
+    public void addExp(int amountOfExp) {
+        coachExp += amountOfExp;
+    }
 }

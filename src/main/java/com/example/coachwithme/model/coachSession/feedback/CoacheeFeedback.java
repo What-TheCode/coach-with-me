@@ -1,4 +1,4 @@
-package com.example.coachwithme.model.user;
+package com.example.coachwithme.model.coachSession.feedback;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @Table(name = "user_feedback")
-public class UserFeedback {
+public class CoacheeFeedback {
 
     @Id
     @Column(name = "id")

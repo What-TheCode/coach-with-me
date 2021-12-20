@@ -1,4 +1,4 @@
-package com.example.coachwithme.model.user.coach;
+package com.example.coachwithme.model.coachSession.feedback;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

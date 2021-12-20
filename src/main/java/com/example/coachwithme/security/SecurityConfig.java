@@ -59,12 +59,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(GET, "/users/checkEmail/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/users/checkPicture/**").permitAll();
+
         http.authorizeRequests().antMatchers(POST, "/coaches/becomecoach").permitAll();
-        http.authorizeRequests().antMatchers(POST, "/coaches/{userId}").hasAnyAuthority(UserRole.COACH.getRoleName(),UserRole.ADMIN.getRoleName());
+        http.authorizeRequests().antMatchers(POST, "/coaches/{userId}").hasAnyAuthority(UserRole.COACH.getRoleName(), UserRole.ADMIN.getRoleName());
         http.authorizeRequests().antMatchers(POST, "/coaches/topicexperience/{userId}").hasAuthority(UserRole.ADMIN.getRoleName());
         http.authorizeRequests().antMatchers(PUT, "/coaches/**").permitAll();
+
+        http.authorizeRequests().antMatchers(POST, "/sessions/feedback/coach/**").hasAuthority(UserRole.COACH.getRoleName());
+        http.authorizeRequests().antMatchers(POST, "/sessions/feedback/coachee/**").hasAuthority(UserRole.COACHEE.getRoleName());
+
         http.authorizeRequests().antMatchers(GET, "/admin/**").hasAuthority(UserRole.ADMIN.getRoleName());
         http.authorizeRequests().antMatchers(POST, "/admin/**").hasAuthority(UserRole.ADMIN.getRoleName());
+
+
         http.authorizeRequests().antMatchers("/v3/api-docs/**",
                 "/configuration/ui",
                 "/swagger-resources/**",

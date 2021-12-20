@@ -1,5 +1,6 @@
 package com.example.coachwithme.dto.coachsession;
 
+import com.example.coachwithme.dto.coachsession.feedback.SessionFeedbackDto;
 import com.example.coachwithme.dto.coachsession.topic.TopicDto;
 import com.example.coachwithme.dto.user.UserDto;
 import com.example.coachwithme.model.Location;

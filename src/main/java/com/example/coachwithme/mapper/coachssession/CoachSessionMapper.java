@@ -3,7 +3,7 @@ package com.example.coachwithme.mapper.coachssession;
 import com.example.coachwithme.dto.coachsession.CoachSessionDto;
 import com.example.coachwithme.dto.coachsession.CreateCoachSessionDto;
 import com.example.coachwithme.dto.coachsession.LocationDto;
-import com.example.coachwithme.mapper.SessionFeedbackMapper;
+import com.example.coachwithme.mapper.coachssession.feedback.SessionFeedbackMapper;
 import com.example.coachwithme.mapper.coachssession.topic.TopicMapper;
 import com.example.coachwithme.mapper.user.UserMapper;
 import com.example.coachwithme.model.Location;

@@ -2,16 +2,17 @@ package com.example.coachwithme.service;
 
 import com.example.coachwithme.dto.coachsession.topic.TopicDto;
 import com.example.coachwithme.dto.coachsession.topic.UpdateTopicExperienceDto;
-import com.example.coachwithme.dto.user.*;
+import com.example.coachwithme.dto.user.CoachDto;
+import com.example.coachwithme.dto.user.CreateUserDto;
+import com.example.coachwithme.dto.user.UpdateUserDto;
+import com.example.coachwithme.dto.user.UserDto;
 import com.example.coachwithme.dto.user.coach.UpdateCoachDto;
 import com.example.coachwithme.exceptions.customExceptions.CoachCanNotTeachTopicException;
-import com.example.coachwithme.exceptions.customExceptions.UserDoesNotExistException;
 import com.example.coachwithme.exceptions.customExceptions.UserIsNotACoachException;
 import com.example.coachwithme.mapper.coachssession.topic.TopicExperienceMapper;
 import com.example.coachwithme.mapper.coachssession.topic.TopicMapper;
 import com.example.coachwithme.mapper.user.NameMapper;
 import com.example.coachwithme.mapper.user.UserMapper;
-import com.example.coachwithme.model.coachSession.topic.TopicExperience;
 import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import com.example.coachwithme.model.user.coach.CoachDetails;
@@ -21,7 +22,6 @@ import com.example.coachwithme.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -29,7 +29,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -149,8 +151,6 @@ public class UserService implements UserDetailsService {
         if (newEmail.equals(emailToUpdate)) {
             return;
         }
-        System.out.println("passing here");
-
         securityService.assertIfTheEmailIsExisting(newEmail);
     }
 
@@ -188,28 +188,6 @@ public class UserService implements UserDetailsService {
 
     }
 
-
-    public List<TopicDto> getTopicsNames() {
-        return topicRepository.findAll().stream().map(topicMapper::toDto).collect(Collectors.toList());
-    }
-
-    private void assertCheckIfTheUserIsCoach(int coachId) {
-        User user = userRepository.findById(coachId).get();
-        if (!user.getUserRoles().contains(UserRole.COACH)) {
-            throw new CoachCanNotTeachTopicException("This person is not Coach..!");
-        }
-    }
-
-    private void assertIfPictureIsValid(CreateUserDto createUserDto) {
-        if (createUserDto.getPictureUrl() == null || createUserDto.getPictureUrl().isBlank()) {
-            createUserDto.setPictureUrl(DEFAULT_PROFILE_PICTURE);
-            return;
-        }
-
-        if (!createUserDto.getPictureUrl().contains(".jpg") && !createUserDto.getPictureUrl().contains(".jepg") && !createUserDto.getPictureUrl().contains(".png")) {
-            createUserDto.setPictureUrl(DEFAULT_PROFILE_PICTURE);
-        }
-    }
 
     public List<TopicDto> getTopicsNames() {
         return topicRepository.findAll().stream().map(topicMapper::toDto).collect(Collectors.toList());

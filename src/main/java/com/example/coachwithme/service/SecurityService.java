@@ -78,18 +78,16 @@ public class SecurityService {
         return userRepository.findByEmail(email) != null;
     }
 
-
-    public void assertIfUserIsInTheCoachSession(int coachSessionId, int userId) {
+    public void assertIfUserIsInTheCoachSessionAndRole(int coachSessionId, UserRole userRole) {
+        User user = getLoggedInUser();
         CoachSession coachSession = coachSessionRepository.getById(coachSessionId);
-        if (coachSession.getCoach().getId() != userId && coachSession.getCoachee().getId() != userId) {
-            throw new UserIsNotInCoachSessionException("User is not in this coachsession and therefore can not change the state of it.");
+
+        if (!user.getUserRoles().contains(userRole)) {
+            throw new NoPermissionsException("You don't have access to do this");
         }
 
-    }
-
-    public void assertIfCoachSessionExist(int coachSessionId) {
-        if (coachSessionRepository.findById(coachSessionId).isEmpty()) {
-            throw new CoachSessionDoesNotExistException("This coachsession does not exist.");
+        if (coachSession.getCoach().getId() != user.getId() && coachSession.getCoachee().getId() != user.getId()) {
+            throw new UserIsNotInCoachSessionException("Logged in User is not in this coachsession.");
         }
     }
 
@@ -118,8 +116,9 @@ public class SecurityService {
     }
 
     public void assertIfListOnlyHasUniqueTopics(List<UpdateTopicExperienceDto> updateTopicExperienceDtos) {
-        if(updateTopicExperienceDtos.get(0).getTopicId() == updateTopicExperienceDtos.get(1).getTopicId()){
+        if (updateTopicExperienceDtos.get(0).getTopicId() == updateTopicExperienceDtos.get(1).getTopicId()) {
             throw new NotUniqueTopicsInTopicExperiencesException("A topic can not be added twice to your teaching list");
         }
     }
+
 }
