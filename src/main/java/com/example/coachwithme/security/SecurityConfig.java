@@ -62,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(POST, "/coaches/becomecoach").permitAll();
         http.authorizeRequests().antMatchers(POST, "/coaches/{userId}").hasAnyAuthority(UserRole.COACH.getRoleName(), UserRole.ADMIN.getRoleName());
-        http.authorizeRequests().antMatchers(POST, "/coaches/topicexperience/{userId}").hasAuthority(UserRole.ADMIN.getRoleName());
+        http.authorizeRequests().antMatchers(POST, "/coaches/topicexperience/{userId}").hasAnyAuthority(UserRole.ADMIN.getRoleName(),UserRole.COACH.getRoleName());
         http.authorizeRequests().antMatchers(PUT, "/coaches/**").permitAll();
 
         http.authorizeRequests().antMatchers(POST, "/sessions/feedback/coach/**").hasAuthority(UserRole.COACH.getRoleName());
