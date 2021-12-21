@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
@@ -67,5 +68,9 @@ public class UserMapper {
                 .pictureUrl(user.getPictureUrl())
                 .topicExperienceDtoList(this.coachDetailMapper.toDto(user.getCoachDetails()).getCoachExperiences())
                 .build();
+    }
+
+    public List<UserDto> toDtos(List<User> users) {
+        return users.stream().map(this::toDto).collect(Collectors.toList());
     }
 }

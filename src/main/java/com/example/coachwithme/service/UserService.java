@@ -101,6 +101,10 @@ public class UserService implements UserDetailsService {
         return userMapper.toDto(userRepository.getById(userId));
     }
 
+    public List<UserDto> getAllUsers() {
+        return userMapper.toDtos(userRepository.findAll());
+    }
+
     public UserDto upGradeToCoach(int userId) {
         securityService.assertIfUserIdMatchesJWTTokenId(userId);
         User userToUpgrade = userRepository.getById(userId);
@@ -233,9 +237,6 @@ public class UserService implements UserDetailsService {
         return coachTopicListDto;
 
     }
-
-
-
 
 
 }
