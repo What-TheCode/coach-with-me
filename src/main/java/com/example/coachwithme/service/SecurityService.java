@@ -48,6 +48,10 @@ public class SecurityService {
         }
     }
 
+    public boolean isAdmin(int userId) {
+        return this.userRepository.getById(userId).getUserRoles().contains(UserRole.ADMIN);
+    }
+
     public void assertIfUserCanModifyProfile(int userId) {
         assertIfUserIdExist(userId);
         User user = getLoggedInUser();
@@ -85,6 +89,15 @@ public class SecurityService {
         if (!user.getUserRoles().contains(userRole)) {
             throw new NoPermissionsException("You don't have access to do this");
         }
+
+        if (coachSession.getCoach().getId() != user.getId() && coachSession.getCoachee().getId() != user.getId()) {
+            throw new UserIsNotInCoachSessionException("Logged in User is not in this coachsession.");
+        }
+    }
+
+    public void assertIfUserIsInTheCoachSession(int coachSessionId) {
+        User user = getLoggedInUser();
+        CoachSession coachSession = coachSessionRepository.getById(coachSessionId);
 
         if (coachSession.getCoach().getId() != user.getId() && coachSession.getCoachee().getId() != user.getId()) {
             throw new UserIsNotInCoachSessionException("Logged in User is not in this coachsession.");

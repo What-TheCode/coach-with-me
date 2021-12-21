@@ -17,6 +17,7 @@ import com.example.coachwithme.model.coachSession.SessionState;
 import com.example.coachwithme.model.coachSession.feedback.CoachFeedback;
 import com.example.coachwithme.model.coachSession.feedback.CoacheeFeedback;
 import com.example.coachwithme.model.coachSession.feedback.SessionFeedback;
+import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import com.example.coachwithme.repository.CoachSessionRepository;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +75,7 @@ public class CoachSessionService {
     }
 
     public CoachSessionDto updateCoachSession(int coachSessionId, int userId, SessionState sessionState) {
-//        CoachSessionStateValidation(coachSessionId, userId, sessionState);
+        CoachSessionStateValidation(coachSessionId, userId, sessionState);
         CoachSession coachSessionToUpdate = coachSessionRepository.findById(coachSessionId).get();
         coachSessionToUpdate.setState(sessionState);
         return coachSessionMapper.toDto(coachSessionToUpdate);
@@ -177,6 +178,14 @@ public class CoachSessionService {
     private void sessionValidation(CreateCoachSessionDto createCoachSessionDto) {
         userService.assertIfUserIsACoach(createCoachSessionDto.getCoachId());
         userService.assertIfCoachCanTeachTopic(createCoachSessionDto.getCoachId(), createCoachSessionDto.getTopicId());
+    }
+
+    private void CoachSessionStateValidation(int coachSessionId, int userId, SessionState sessionState) {
+        if(!this.securityService.isAdmin(userId)){
+            this.securityService.assertIfUserIdMatchesJWTTokenId(userId);
+            this.securityService.assertIfUserIsInTheCoachSession(coachSessionId);
+            this.securityService.assertIfSessionStateIsAllowedToChange(coachSessionId, userId, sessionState);
+        }
     }
 
 }
