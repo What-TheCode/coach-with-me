@@ -2,10 +2,7 @@ package com.example.coachwithme.service;
 
 import com.example.coachwithme.dto.coachsession.topic.TopicDto;
 import com.example.coachwithme.dto.coachsession.topic.UpdateTopicExperienceDto;
-import com.example.coachwithme.dto.user.CoachDto;
-import com.example.coachwithme.dto.user.CreateUserDto;
-import com.example.coachwithme.dto.user.UpdateUserDto;
-import com.example.coachwithme.dto.user.UserDto;
+import com.example.coachwithme.dto.user.*;
 import com.example.coachwithme.dto.user.coach.UpdateCoachDto;
 import com.example.coachwithme.exceptions.customExceptions.CoachCanNotTeachTopicException;
 import com.example.coachwithme.exceptions.customExceptions.UserIsNotACoachException;
@@ -33,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.List.of;
 
 @Service
 @Transactional
@@ -119,8 +118,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll()
                 .stream()
                 .filter(role -> role.getUserRoles().contains(UserRole.COACH))
-
                 .filter(coachDetails -> coachDetails.getCoachDetails() != null)
+                .filter(overview -> overview.getCoachDetails().getCoachExperiences().size() != 0)
                 .map(userMapper::toCoachDto)
                 .collect(Collectors.toList());
 
@@ -201,6 +200,7 @@ public class UserService implements UserDetailsService {
     }
 
     private void assertIfPictureIsValid(CreateUserDto createUserDto) {
+
         if (createUserDto.getPictureUrl() == null || createUserDto.getPictureUrl().isBlank()) {
             createUserDto.setPictureUrl(DEFAULT_PROFILE_PICTURE);
             return;
@@ -210,6 +210,35 @@ public class UserService implements UserDetailsService {
             createUserDto.setPictureUrl(DEFAULT_PROFILE_PICTURE);
         }
     }
+
+    public List<TopicDto> getTopicsNamesByCoachId(int coachId) {
+
+        List<Integer> topicIds = userRepository.getById(coachId).getCoachDetails().getCoachExperiences().stream()
+                .map(topic -> topic.getTopic().getId())
+                .collect(Collectors.toList());
+
+
+        List<TopicDto> topicDtoList = topicRepository.findAll()
+                .stream()
+                .map(topicMapper::toDto).collect(Collectors.toList());
+
+        List<TopicDto> coachTopicListDto = new ArrayList<>();
+
+        for (TopicDto topicDto : topicDtoList) {
+            for (Integer topicId : topicIds) {
+                if (topicDto.getId() == topicId) {
+                    coachTopicListDto.add(topicDto);
+                }
+            }
+
+        }
+        return coachTopicListDto;
+
+    }
+
+
+
+
 
 }
 

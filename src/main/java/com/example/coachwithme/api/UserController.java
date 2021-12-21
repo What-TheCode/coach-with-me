@@ -87,5 +87,12 @@ public class UserController {
         return userService.getTopicsNames();
     }
 
+    @GetMapping(path = "/topics/{coachId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<TopicDto> getAllTopicsByCoachId(@PathVariable int coachId) {
+        return userService.getTopicsNamesByCoachId(coachId);
+    }
+
+
 
 }
