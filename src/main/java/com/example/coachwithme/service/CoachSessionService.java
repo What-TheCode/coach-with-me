@@ -109,6 +109,10 @@ public class CoachSessionService {
 
         CoachSession coachSession = coachSessionRepository.findById(coachSessionId).get();
 
+        if (coachSession.getFeedback() == null) {
+            coachSession.setFeedback(new SessionFeedback());
+        }
+
         if (coachSession.getFeedback().getCoacheeFeedback() != null) {
             throw new FeedbackAlreadyGivenException("You can only give feedback once.");
         }
@@ -137,7 +141,6 @@ public class CoachSessionService {
             if (isCoachSessionsOverdue(coachSession)) {
                 log.info("Coach session State changed to DONE WAITING FEEDBACK because Date is overdue with Id {} ", coachSession.getId());
                 coachSession.setState(SessionState.DONE_WAITING_FEEDBACK);
-                coachSession.setFeedback(new SessionFeedback());
             }
         }
     }
