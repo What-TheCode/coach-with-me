@@ -175,13 +175,11 @@ public class UserService implements UserDetailsService {
                 .stream()
                 .filter(role -> role.getUserRoles().contains(UserRole.COACH))
                 .filter(coachDetails -> coachDetails.getCoachDetails() != null)
-
-
+                .filter(topicexperiences -> topicexperiences.getCoachDetails().getCoachExperiences().size() != 0)
                 .filter(topicName ->
                         topicName.getCoachDetails().getCoachExperiences()
                                 .stream()
-
-                                .allMatch(topic -> topic.getTopic().getName().toLowerCase().contains(topicSelectedName.toLowerCase())))
+                                .anyMatch(topic -> topic.getTopic().getName().toLowerCase().contains(topicSelectedName.toLowerCase())))
                 .map(userMapper::toCoachDto)
                 .collect(Collectors.toList());
 
