@@ -17,7 +17,6 @@ import com.example.coachwithme.model.coachSession.SessionState;
 import com.example.coachwithme.model.coachSession.feedback.CoachFeedback;
 import com.example.coachwithme.model.coachSession.feedback.CoacheeFeedback;
 import com.example.coachwithme.model.coachSession.feedback.SessionFeedback;
-import com.example.coachwithme.model.user.User;
 import com.example.coachwithme.model.user.UserRole;
 import com.example.coachwithme.repository.CoachSessionRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,21 +48,24 @@ public class CoachSessionService {
 
         CoachSession newCoachSession = coachSessionMapper.toEntity(createCoachSessionDto);
         this.coachSessionRepository.save(newCoachSession);
-        return coachSessionMapper.toDto(newCoachSession);
+        return coachSessionMapper.toDtos(newCoachSession);
     }
 
     public List<CoachSessionDto> getCoachSessionsAsCoachee(int coacheeId) {
         this.securityService.assertIfUserIdMatchesJWTTokenId(coacheeId);
 
-        return this.coachSessionMapper.toDto(
+        return this.coachSessionMapper.toDtos(
                 this.coachSessionRepository.findCoachSessionsByCoacheeId(coacheeId));
     }
 
     public List<CoachSessionDto> getCoachSessionsAsCoach(int coachId) {
         this.securityService.assertIfUserIdMatchesJWTTokenId(coachId);
 
-        return this.coachSessionMapper.toDto(
-                this.coachSessionRepository.findCoachSessionsByCoachId(coachId));
+        return this.coachSessionMapper.toDtos(this.coachSessionRepository.findCoachSessionsByCoachId(coachId));
+    }
+
+    public List<CoachSessionDto> getAllCoachingSessions() {
+        return this.coachSessionMapper.toDtos(this.coachSessionRepository.findAll());
     }
 
     public List<CoachSession> getAllAcceptedCoachSessions() {
@@ -78,7 +80,7 @@ public class CoachSessionService {
         CoachSessionStateValidation(coachSessionId, userId, sessionState);
         CoachSession coachSessionToUpdate = coachSessionRepository.findById(coachSessionId).get();
         coachSessionToUpdate.setState(sessionState);
-        return coachSessionMapper.toDto(coachSessionToUpdate);
+        return coachSessionMapper.toDtos(coachSessionToUpdate);
     }
 
     public CoachFeedbackDto addCoachFeedback(int coachSessionId, CreateCoachFeedbackDto createCoachFeedbackDto) {
@@ -172,6 +174,7 @@ public class CoachSessionService {
         if (coachSession.getFeedback().getCoachFeedback() != null && coachSession.getFeedback().getCoacheeFeedback() != null) {
             log.info("Both feedbacks are given for Coach session Id:" + coachSession.getId() + " - Given 10 XP point to the Coach");
             coachSession.getCoach().getCoachDetails().addExp(REWARD_AMOUNT_OF_EXP_AFTER_COACH_SESSION);
+            coachSession.setState(SessionState.FINISHED);
         }
     }
 
@@ -181,7 +184,7 @@ public class CoachSessionService {
     }
 
     private void CoachSessionStateValidation(int coachSessionId, int userId, SessionState sessionState) {
-        if(!this.securityService.isAdmin(userId)){
+        if (!this.securityService.isAdmin(userId)) {
             this.securityService.assertIfUserIdMatchesJWTTokenId(userId);
             this.securityService.assertIfUserIsInTheCoachSession(coachSessionId);
             this.securityService.assertIfSessionStateIsAllowedToChange(coachSessionId, userId, sessionState);

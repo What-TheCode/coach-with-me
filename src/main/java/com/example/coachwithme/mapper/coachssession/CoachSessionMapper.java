@@ -44,13 +44,13 @@ public class CoachSessionMapper {
     }
 
 
-    public List<CoachSessionDto> toDto(List<CoachSession> coachSessions) {
+    public List<CoachSessionDto> toDtos(List<CoachSession> coachSessions) {
         return coachSessions.stream()
-                .map(this::toDto)
+                .map(this::toDtos)
                 .collect(Collectors.toList());
     }
 
-    public CoachSessionDto toDto(CoachSession coachSession){
+    public CoachSessionDto toDtos(CoachSession coachSession){
         return CoachSessionDto.builder()
                 .id(coachSession.getId())
                 .subject(this.topicMapper.toDto(coachSession.getSubject()))

@@ -31,8 +31,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.List.of;
-
 @Service
 @Transactional
 @Slf4j
@@ -40,6 +38,8 @@ import static java.util.List.of;
 public class UserService implements UserDetailsService {
 
     public static final String DEFAULT_PROFILE_PICTURE = "https://i.imgur.com/5MzuCZy.png";
+    public static final List<String> SUPPORTED_IMAGE_FORMATS = List.of(".jpg", ".jpeg", ".png");
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final NameMapper nameMapper;
@@ -99,6 +99,10 @@ public class UserService implements UserDetailsService {
         userToUpdate.setPictureUrl(updateUserDto.getPictureUrl());
 
         return userMapper.toDto(userRepository.getById(userId));
+    }
+
+    public List<UserDto> getAllUsers() {
+        return userMapper.toDtos(userRepository.findAll());
     }
 
     public UserDto upGradeToCoach(int userId) {
@@ -204,9 +208,13 @@ public class UserService implements UserDetailsService {
             return;
         }
 
-        if (!createUserDto.getPictureUrl().contains(".jpg") && !createUserDto.getPictureUrl().contains(".jepg") && !createUserDto.getPictureUrl().contains(".png")) {
-            createUserDto.setPictureUrl(DEFAULT_PROFILE_PICTURE);
+        for (String imageFomat : SUPPORTED_IMAGE_FORMATS) {
+            if (createUserDto.getPictureUrl().contains(imageFomat)) {
+                //Return if URL contains a supported Image format
+                return;
+            }
         }
+        createUserDto.setPictureUrl(DEFAULT_PROFILE_PICTURE);
     }
 
     public List<TopicDto> getTopicsNamesByCoachId(int coachId) {
@@ -233,9 +241,6 @@ public class UserService implements UserDetailsService {
         return coachTopicListDto;
 
     }
-
-
-
 
 
 }
