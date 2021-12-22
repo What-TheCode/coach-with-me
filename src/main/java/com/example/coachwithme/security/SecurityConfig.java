@@ -90,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setMaxAge(8000L);
         corsConfig.setAllowCredentials(true);
-        corsConfig.addAllowedOrigin("https://61c1f04f3d31b21861d79c1b--compassionate-snyder-5e4bd1.netlify.app");
+        corsConfig.addAllowedOrigin("https://61c347374bd53f3e37189d61--compassionate-snyder-5e4bd1.netlify.app/");
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("GET");
         corsConfig.addAllowedMethod("POST");
