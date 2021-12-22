@@ -97,6 +97,7 @@ public class UserService implements UserDetailsService {
         userToUpdate.setName(nameMapper.toEntity(updateUserDto.getName()));
         userToUpdate.setEmail(updateUserDto.getEmail());
         userToUpdate.setPictureUrl(updateUserDto.getPictureUrl());
+        userToUpdate.setUserRoles(updateUserDto.getUserRoles());
 
         return userMapper.toDto(userRepository.getById(userId));
     }

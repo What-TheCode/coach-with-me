@@ -1,5 +1,6 @@
 package com.example.coachwithme.dto.user;
 
+import com.example.coachwithme.model.user.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import java.util.Set;
 
 
 @Getter
@@ -21,5 +23,6 @@ public class UpdateUserDto {
     @Email(message = "Email should be valid")
     private String email;
     private String pictureUrl;
+    private Set<UserRole> userRoles;
 
 }
