@@ -90,6 +90,10 @@ public class CoachSessionService {
 
         CoachSession coachSession = coachSessionRepository.findById(coachSessionId).get();
 
+        if (coachSession.getFeedback() == null) {
+            coachSession.setFeedback(new SessionFeedback());
+        }
+
         if (coachSession.getFeedback().getCoachFeedback() != null) {
             throw new FeedbackAlreadyGivenException("You can only give feedback once.");
         }
