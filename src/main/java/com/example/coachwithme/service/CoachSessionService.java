@@ -61,6 +61,8 @@ public class CoachSessionService {
     public List<CoachSessionDto> getCoachSessionsAsCoach(int coachId) {
         this.securityService.assertIfUserIdMatchesJWTTokenId(coachId);
 
+        log.info("Coaching sessions retrieved with coachId" + coachId);
+
         return this.coachSessionMapper.toDtos(this.coachSessionRepository.findCoachSessionsByCoachId(coachId));
     }
 
