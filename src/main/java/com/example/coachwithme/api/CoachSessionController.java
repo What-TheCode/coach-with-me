@@ -92,7 +92,7 @@ public class CoachSessionController {
 
     @PostMapping(path = "/feedback/coachee/{coachSessionId}")
     public CoacheeFeedbackDto leaveFeedbackAsCoachee(@PathVariable int coachSessionId, @RequestBody CreateCoacheeFeedbackDto createCoacheeFeedbackDto) {
-        log.info("Coachsession with id " + coachSessionId + " has received feedback from the coach.");
+        log.info("Coachsession with id " + coachSessionId + " has received feedback from the coachee.");
         return coachSessionService.addCoacheeFeedback(coachSessionId, createCoacheeFeedbackDto);
     }
 
