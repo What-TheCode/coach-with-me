@@ -85,7 +85,7 @@ public class CoachSessionService {
         return coachSessionMapper.toDtos(coachSessionToUpdate);
     }
 
-    public CoachFeedbackDto addCoachFeedback(int coachSessionId, CreateCoachFeedbackDto createCoachFeedbackDto) {
+    public CoachFeedbackDto addFeedbackForCoachee(int coachSessionId, CreateCoachFeedbackDto createCoachFeedbackDto) {
         assertCoachSessionsIdExists(coachSessionId);
         assertCoachSessionsStateIsWaitingForFeedback(coachSessionId);
         securityService.assertIfUserIsInTheCoachSessionAndRole(coachSessionId, UserRole.COACH);
@@ -108,7 +108,7 @@ public class CoachSessionService {
         return coachFeedbackMapper.toDto(coachFeedback);
     }
 
-    public CoacheeFeedbackDto addCoacheeFeedback(int coachSessionId, CreateCoacheeFeedbackDto createCoacheeFeedbackDto) {
+    public CoacheeFeedbackDto addFeedbackForCoach(int coachSessionId, CreateCoacheeFeedbackDto createCoacheeFeedbackDto) {
         assertCoachSessionsIdExists(coachSessionId);
         assertCoachSessionsStateIsWaitingForFeedback(coachSessionId);
         securityService.assertIfUserIsInTheCoachSessionAndRole(coachSessionId, UserRole.COACHEE);

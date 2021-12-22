@@ -83,18 +83,16 @@ public class CoachSessionController {
         return this.coachSessionService.updateCoachSession(coachSessionId, userId, SessionState.DECLINED);
     }
 
-
     @PostMapping(path = "/feedback/coach/{coachSessionId}")
     public CoachFeedbackDto leaveFeedbackAsCoach(@PathVariable int coachSessionId, @RequestBody CreateCoachFeedbackDto createCoachFeedbackDto) {
         log.info("Coachsession with id " + coachSessionId + " has received feedback from the coach.");
-        return coachSessionService.addCoachFeedback(coachSessionId, createCoachFeedbackDto);
+        return coachSessionService.addFeedbackForCoachee(coachSessionId, createCoachFeedbackDto);
     }
 
     @PostMapping(path = "/feedback/coachee/{coachSessionId}")
     public CoacheeFeedbackDto leaveFeedbackAsCoachee(@PathVariable int coachSessionId, @RequestBody CreateCoacheeFeedbackDto createCoacheeFeedbackDto) {
         log.info("Coachsession with id " + coachSessionId + " has received feedback from the coachee.");
-        return coachSessionService.addCoacheeFeedback(coachSessionId, createCoacheeFeedbackDto);
+        return coachSessionService.addFeedbackForCoach(coachSessionId, createCoacheeFeedbackDto);
     }
-
 
 }
