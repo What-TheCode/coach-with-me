@@ -49,7 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests().antMatchers(OPTIONS, "/**").permitAll();
-
         http.authorizeRequests().antMatchers(GET, "/users/login/**").permitAll();
         http.authorizeRequests().antMatchers(POST, "/users").permitAll();
         http.authorizeRequests().antMatchers(PUT, "/users/**").permitAll();
@@ -91,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.setMaxAge(8000L);
         corsConfig.setAllowCredentials(true);
-        corsConfig.addAllowedOrigin("*");
+        corsConfig.addAllowedOrigin("https://61c1f04f3d31b21861d79c1b--compassionate-snyder-5e4bd1.netlify.app");
         corsConfig.addAllowedHeader("*");
         corsConfig.addAllowedMethod("GET");
         corsConfig.addAllowedMethod("POST");
